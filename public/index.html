@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCHINAX Global | End-to-End Business Solutions</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="preloader" id="preloader">
+        <div class="loader-inner">
+            <div class="loader-ring"></div>
+            <div class="loader-brand">
+                <span class="loader-title">RCHINAX</span>
+                <span class="loader-sub">GLOBAL</span>
+            </div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <a href="/index.html" class="brand">
+                <img src="/assets/images/logo.png" alt="RCHINAX Global" class="brand-img"
+                    onerror="this.style.display='none'; document.getElementById('brand-fallback').style.display='inline-block';">
+                <span id="brand-fallback"
+                    style="display:none; font-weight:800; font-size:1.3rem; letter-spacing:1px; color:#151918;">RCHINAX
+                    <span style="color:#53a922;">GLOBAL</span></span>
+            </a>
+
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    <li><a href="/index.html" class="nav-link active">Home</a></li>
+                    <li class="has-dropdown">
+                        <a href="#services" class="nav-link">Services <i class="fa-solid fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#services">Logo Design & Branding</a></li>
+                            <li><a href="#services">Website Development & E-Commerce</a></li>
+                            <li><a href="#services">Domain Registration & Hosting</a></li>
+                            <li><a href="#services">Global Logistics & Courier</a></li>
+                            <li><a href="#services">Legal & Compliance</a></li>
+                            <li><a href="#services">Business Banking & Insurance</a></li>
+                            <li><a href="#services">Franchise Strategy & Consulting</a></li>
+                            <li><a href="#services">Digital Marketing & Growth</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#about" class="nav-link">About Us</a></li>
+                    <li><a href="#why-us" class="nav-link">Why Choose Us</a></li>
+                    <li><a href="#process" class="nav-link">Process</a></li>
+
+                    <!-- Mobile Auth Navigation -->
+                    <li class="mobile-cta">
+                        <div id="mobile-guest-actions" class="mobile-auth-group">
+                            <a href="/login.html" class="btn btn-outline-dark-sm">Sign In</a>
+                            <a href="/signup.html" class="btn btn-green-sm">Sign Up <i
+                                    class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                        <div id="mobile-user-actions" class="mobile-auth-group" style="display: none;">
+                            <span id="mobile-user-greeting" class="user-pill"></span>
+                            <button id="mobile-logout-btn" class="btn btn-outline-dark-sm">Logout</button>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <!-- Desktop Guest State (Sign In + Sign Up) -->
+                <div id="desktop-guest-actions" class="auth-buttons-group">
+                    <a href="/login.html" class="btn btn-ghost">Sign In</a>
+                    <a href="/signup.html" class="btn btn-green btn-sm">Sign Up <i
+                            class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Desktop Authenticated State (User Greeting + Logout) -->
+                <div id="desktop-user-actions" class="auth-buttons-group" style="display: none;">
+                    <span id="user-greeting" class="user-pill"></span>
+                    <button id="desktop-logout-btn" class="btn btn-outline-dark-sm">Logout</button>
+                </div>
+
+                <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto"
+                poster="/assets/images/hero-poster.png">
+                <source
+                    src="https://res.cloudinary.com/yrunatkp/video/upload/f_auto,q_auto,w_1280,ac_none/v1795369448/13219633_2560_1440_30fps.mp4"
+                    type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+
+            <div class="container hero-container">
+                <div class="hero-content reveal-up">
+                    <h1>
+                        Grow Your Business<br>
+                        <span class="text-lime">Without Limits</span>
+                    </h1>
+                    <p class="hero-subtitle">End-to-End Business Solutions Under One Roof</p>
+                    <p class="hero-desc">
+                        From branding to global delivery, RCHINAX Global empowers your business with innovative,
+                        reliable and scalable solutions.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#services" class="btn btn-green btn-lg">
+                            Explore Our Services <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="https://wa.me/917318692999?text=Hello%20RCHINAX%20Global%2C%20I%20would%20like%20to%20inquire%20about%20your%20business%20solutions%20and%20schedule%20a%20free%20consultation."
+                            target="_blank" rel="noopener noreferrer" class="btn btn-outline-light btn-lg">
+                            <i class="fa-regular fa-calendar-check"></i> Free Consultation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-wave" aria-hidden="true">
+                <svg viewBox="0 0 1440 130" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="heroGreenWave" x1="0%" y1="50%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#1d3d10" stop-opacity="0" />
+                            <stop offset="35%" stop-color="#3f8f1c" />
+                            <stop offset="75%" stop-color="#75c727" />
+                            <stop offset="100%" stop-color="#87d82d" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M0,130 C320,130 620,122 920,92 C1160,68 1320,35 1440,0 L1440,130 Z"
+                        fill="url(#heroGreenWave)" />
+                    <path d="M0,130 C380,130 700,126 1020,104 C1220,90 1360,64 1440,38 L1440,130 Z" fill="#ffffff" />
+                </svg>
+            </div>
+        </section>
+
+        <section class="about-section" id="about">
+            <div class="container about-grid">
+                <div class="about-media reveal-left">
+                    <div class="about-accent-shape"></div>
+                    <div class="about-img-wrap">
+                        <img src="/assets/images/about-building.png" alt="RCHINAX Global Corporate Building"
+                            onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80'">
+                    </div>
+                </div>
+
+                <div class="about-content reveal-up">
+                    <div class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        <span class="eyebrow-green">About</span> RCHINAX Global
+                    </div>
+                    <h2>
+                        Your Trusted Partner<br>
+                        for <span class="text-green">Business Growth</span>
+                    </h2>
+                    <p>
+                        RCHINAX Global is a dynamic business solutions provider, offering a comprehensive range of
+                        services to help you establish, grow and thrive in today's competitive world.
+                    </p>
+                    <a href="#services" class="btn btn-green">
+                        Our Verticals <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="about-highlights reveal-right">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <h4>Trusted & Reliable Partner</h4>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+                        <h4>Innovative Solutions for Growth</h4>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <h4>Global Reach, Local Support</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-section" id="services">
+            <div class="container">
+                <div class="section-head center reveal-up">
+                    <div class="eyebrow center">
+                        <span class="eyebrow-line"></span>
+                        Our Services
+                        <span class="eyebrow-line"></span>
+                    </div>
+                    <h2>Comprehensive Business Solutions</h2>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card reveal-up" style="--delay: 0.05s">
+                        <div class="service-icon"><i class="fa-solid fa-palette"></i></div>
+                        <h3>Logo Design & Branding</h3>
+                        <p>Professional logo design, brand identity, brand guidelines, and visual branding solutions.
+                        </p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.1s">
+                        <div class="service-icon"><i class="fa-solid fa-code"></i></div>
+                        <h3>Website Development & E-Commerce</h3>
+                        <p>Custom website development, responsive web design, web applications, and e-commerce store
+                            development.</p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.15s">
+                        <div class="service-icon"><i class="fa-solid fa-globe"></i></div>
+                        <h3>Domain Registration & Hosting</h3>
+                        <p>Domain name registration, web hosting, business email, SSL certificates, and website
+                            maintenance.</p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.2s">
+                        <div class="service-icon"><i class="fa-solid fa-plane-departure"></i></div>
+                        <h3>Global Logistics & Courier</h3>
+                        <p>International shipping, courier services, supply chain management, and delivery solutions.
+                        </p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.25s">
+                        <div class="service-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                        <h3>Legal & Compliance Documentation</h3>
+                        <p>Business registration, licenses, legal documentation, regulatory compliance, and business
+                            agreements.</p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.3s">
+                        <div class="service-icon"><i class="fa-solid fa-building-columns"></i></div>
+                        <h3>Business Banking & Insurance</h3>
+                        <p>Business banking assistance, payment solutions, financial services, and business insurance
+                            support.</p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.35s">
+                        <div class="service-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                        <h3>Franchise Strategy & Consulting</h3>
+                        <p>Franchise planning, business expansion strategies, franchise documentation, and consulting.
+                        </p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+
+                    <article class="service-card reveal-up" style="--delay: 0.4s">
+                        <div class="service-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                        <h3>Digital Marketing & Growth</h3>
+                        <p>SEO, social media marketing, Google Ads, content marketing, online promotions, and growth
+                            strategies.</p>
+                        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="why-section" id="why-us">
+            <div class="why-bg" style="background-image: url('/assets/images/why-earth-bg.webp');"></div>
+            <div class="why-glow"></div>
+
+            <div class="container why-grid">
+                <div class="why-intro reveal-left">
+                    <div class="eyebrow dark">
+                        <span class="eyebrow-line"></span>
+                        <span class="eyebrow-green">Why Choose Us?</span>
+                    </div>
+                    <h2>Your Growth,<br>Our Commitment</h2>
+                    <p>We combine expertise, innovation and dedication to deliver solutions that help your business
+                        thrive.</p>
+                    <a href="https://wa.me/917318692999" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-green">
+                        Connect Directly <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="why-pillars">
+                    <div class="pillar-item reveal-up" style="--delay: 0.1s">
+                        <div class="pillar-icon"><i class="fa-solid fa-globe"></i></div>
+                        <h4>One-Stop<br>Business Solutions</h4>
+                    </div>
+                    <div class="pillar-item reveal-up" style="--delay: 0.2s">
+                        <div class="pillar-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <h4>Expert Team &<br>Innovative Approach</h4>
+                    </div>
+                    <div class="pillar-item reveal-up" style="--delay: 0.3s">
+                        <div class="pillar-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h4>Secure &<br>Reliable Services</h4>
+                    </div>
+                    <div class="pillar-item reveal-up" style="--delay: 0.4s">
+                        <div class="pillar-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                        <h4>Global Support</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="process-section" id="process">
+            <div class="container">
+                <div class="section-head center reveal-up">
+                    <div class="eyebrow center">
+                        <span class="eyebrow-line"></span>
+                        Our Business Process
+                        <span class="eyebrow-line"></span>
+                    </div>
+                    <h2>Simple Steps. Big Results.</h2>
+                </div>
+
+                <div class="process-track">
+                    <div class="process-step reveal-up" style="--delay: 0.05s">
+                        <div class="step-top">
+                            <span class="step-num">1</span>
+                            <span class="step-icon"><i class="fa-regular fa-comment-dots"></i></span>
+                        </div>
+                        <h4>Consultation</h4>
+                        <p>Share your needs</p>
+                    </div>
+
+                    <div class="process-arrow reveal-up" style="--delay: 0.1s">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <div class="process-step reveal-up" style="--delay: 0.15s">
+                        <div class="step-top">
+                            <span class="step-num">2</span>
+                            <span class="step-icon"><i class="fa-solid fa-gear"></i></span>
+                        </div>
+                        <h4>Planning</h4>
+                        <p>Get a tailored strategy</p>
+                    </div>
+
+                    <div class="process-arrow reveal-up" style="--delay: 0.2s">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <div class="process-step reveal-up" style="--delay: 0.25s">
+                        <div class="step-top">
+                            <span class="step-num">3</span>
+                            <span class="step-icon"><i class="fa-solid fa-rocket"></i></span>
+                        </div>
+                        <h4>Implementation</h4>
+                        <p>We bring it to life</p>
+                    </div>
+
+                    <div class="process-arrow reveal-up" style="--delay: 0.3s">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <div class="process-step reveal-up" style="--delay: 0.35s">
+                        <div class="step-top">
+                            <span class="step-num">4</span>
+                            <span class="step-icon"><i class="fa-solid fa-circle-check"></i></span>
+                        </div>
+                        <h4>Growth</h4>
+                        <p>Achieve your goals</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-box reveal-up">
+                    <div class="cta-left">
+                        <div class="cta-plane">
+                            <i class="fa-regular fa-paper-plane"></i>
+                        </div>
+                        <div class="cta-text">
+                            <h3>Ready to Take Your Business to the Next Level?</h3>
+                            <p>Get in touch with us today for personalized solutions.</p>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/917318692999" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-white">
+                        Contact Us <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <a href="/index.html" class="footer-logo">
+                <img src="/assets/images/logo-white.png" alt="RCHINAX Global" onerror="this.style.display='none'">
+            </a>
+
+            <nav class="footer-links">
+                <a href="/index.html">Home</a>
+                <span class="sep">|</span>
+                <a href="#services">Services</a>
+                <span class="sep">|</span>
+                <a href="#about">About Us</a>
+                <span class="sep">|</span>
+                <a href="#why-us">Why Choose Us</a>
+            </nav>
+
+            <div class="footer-right">
+                <div class="footer-socials">
+                    <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+                <span class="footer-divider"></span>
+                <p class="copyright">&copy; 2026 RCHINAX Global. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

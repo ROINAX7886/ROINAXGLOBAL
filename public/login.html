@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | RCHINAX Global Client Portal</title>
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <a href="/index.html" class="back-home-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+
+        <div class="auth-card">
+            <div class="brand-header">
+                <a href="/index.html" class="auth-brand">
+                    <img src="/assets/images/logo-white.png" alt="RCHINAX Global" class="auth-brand-logo"
+                        onerror="this.style.display='none'; document.getElementById('auth-fallback').style.display='block';">
+                    <div id="auth-fallback" class="auth-fallback" style="display:none;">
+                        RCHINAX <span>GLOBAL</span>
+                    </div>
+                </a>
+                <span class="auth-tag">Client Portal</span>
+            </div>
+
+            <div class="auth-heading">
+                <h2>Welcome Back</h2>
+                <p>Sign in to manage your corporate solutions and inquiries</p>
+            </div>
+
+            <div id="error-box" class="error-banner" style="display: none;"></div>
+
+            <form id="auth-form" data-type="login" novalidate>
+                <div class="form-group">
+                    <label for="email">Work Email Address</label>
+                    <div class="input-wrap">
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                        <input type="email" id="email" name="email" placeholder="name@company.com" required
+                            autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-split">
+                        <label for="password">Password</label>
+                        <a href="https://wa.me/917318692999?text=Hello%20RCHINAX%20Global%2C%20I%20need%20assistance%20resetting%20my%20account%20password."
+                            target="_blank" rel="noopener noreferrer" class="forgot-link">Forgot?</a>
+                    </div>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required
+                            autocomplete="current-password">
+                        <button type="button" class="password-toggle" data-target="password"
+                            aria-label="Toggle password view">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-auth-submit">
+                    <span class="btn-text">Sign In</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have a corporate account?
+                <a href="/signup.html">Create an Account</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+</body>
+
+</html>
