@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Auth success: redirect to index
-                window.location.href = '/index.html';
+                window.location.href = '/profile';
             } catch (err) {
                 showError(err.message);
                 setLoading(false, formType);

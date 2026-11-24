@@ -1,12 +1,10 @@
 <header class="site-header" id="siteHeader">
     <div class="container header-inner">
         <a href="/" class="brand">
-            <img src="/assets/images/logo.png" alt="ROINAX
- Global" class="brand-img"
+            <img src="/assets/images/logo.png" alt="ROINAX Global" class="brand-img"
                 onerror="this.style.display='none'; document.getElementById('brand-fallback').style.display='inline-block';">
             <span id="brand-fallback"
                 style="display:none; font-weight:800; font-size:1.3rem; letter-spacing:1px; color:#151918;">ROINAX
-
                 <span style="color:#53a922;">GLOBAL</span></span>
         </a>
 
@@ -24,7 +22,7 @@
                         <li><a href="/services/banking-insurance">Business Banking & Insurance</a></li>
                         <li><a href="/services/franchise-consulting">Franchise Strategy & Consulting</a></li>
                         <li><a href="/services/digital-marketing">Digital Marketing & Growth</a></li>
-                        <li><a href="#">Shop Now</a></li>
+                        <li><a href="/buy-now">Shop Now</a></li>
                     </ul>
                 </li>
                 <li><a href="#about" class="nav-link">About Us</a></li>
@@ -38,8 +36,9 @@
                         <a href="/signup" class="btn btn-green-sm">Sign Up <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div id="mobile-user-actions" class="mobile-auth-group" style="display: none;">
-                        <span id="mobile-user-greeting" class="user-pill"></span>
-                        <button id="mobile-logout-btn" class="btn btn-outline-dark-sm">Logout</button>
+                        <a href="/profile" class="btn btn-green-sm">
+                            <i class="fa-regular fa-user"></i> Profile
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -52,10 +51,11 @@
                 <a href="/signup" class="btn btn-green btn-sm">Sign Up <i class="fa-solid fa-arrow-right"></i></a>
             </div>
 
-            <!-- Desktop Authenticated State (User Greeting + Logout) -->
+            <!-- Desktop Authenticated State (Profile Only) -->
             <div id="desktop-user-actions" class="auth-buttons-group" style="display: none;">
-                <span id="user-greeting" class="user-pill"></span>
-                <button id="desktop-logout-btn" class="btn btn-outline-dark-sm">Logout</button>
+                <a href="/profile" class="btn btn-green btn-sm">
+                    <i class="fa-regular fa-user"></i> Profile
+                </a>
             </div>
 
             <button class="hamburger" id="hamburger" aria-label="Toggle Menu">

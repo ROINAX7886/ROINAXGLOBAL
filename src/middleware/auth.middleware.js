@@ -1,9 +1,13 @@
 export const requireAuth = (req, res, next) => {
-  if (!req.session || !req.session.userId) {
-    if (req.accepts('html')) {
-      return res.redirect('/login.html');
+    if (!req.session || !req.session.userId) {
+        return res.redirect('/login');
     }
-    return res.status(401).json({ success: false, message: 'Authentication required.' });
-  }
-  next();
+    next();
+};
+
+export const redirectIfAuth = (req, res, next) => {
+    if (req.session && req.session.userId) {
+        return res.redirect('/');
+    }
+    next();
 };

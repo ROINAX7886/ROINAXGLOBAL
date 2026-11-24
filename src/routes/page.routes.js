@@ -1,7 +1,11 @@
 import { Router } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { requireAuth, redirectIfAuth } from '../middleware/auth.middleware.js';
 
 const router = Router();
+const prisma = new PrismaClient();
 
+// Public Views
 router.get('/', (req, res) => {
     res.render('pages/index', {
         layout: 'layouts/base',
@@ -9,19 +13,17 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/login', (req, res) => {
-    if (req.session && req.session.userId) return res.redirect('/');
+router.get('/login', redirectIfAuth, (req, res) => {
     res.render('pages/login', {
         layout: 'layouts/auth-layout',
-        title: 'Sign In | RCHINAX Global',
+        title: 'Sign In | ROINAX Global',
     });
 });
 
-router.get('/signup', (req, res) => {
-    if (req.session && req.session.userId) return res.redirect('/');
+router.get('/signup', redirectIfAuth, (req, res) => {
     res.render('pages/signup', {
         layout: 'layouts/auth-layout',
-        title: 'Create Account | RCHINAX Global',
+        title: 'Create Account | ROINAX Global',
     });
 });
 
@@ -33,6 +35,7 @@ router.get('/contact', (req, res) => {
     });
 });
 
+// Services Verticals
 router.get('/services/logo-branding', (req, res) => {
     res.render('pages/logo-branding', {
         layout: 'layouts/base',
@@ -95,6 +98,40 @@ router.get('/services/digital-marketing', (req, res) => {
         title: 'Digital Marketing & Growth | ROINAX GLOBAL',
         extraCss: '/css/digital-marketing.css'
     });
+});
+
+// Marketplace / Procurement
+router.get('/buy-now', (req, res) => {
+    res.render('pages/buy-now', {
+        layout: 'layouts/base',
+        title: 'Procure Enterprise Packages | ROINAX GLOBAL',
+        extraCss: '/css/buy-now.css'
+    });
+});
+
+// Authenticated User Profile
+router.get('/profile', requireAuth, async (req, res) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.session.userId },
+            select: { id: true, name: true, email: true, createdAt: true }
+        });
+
+        if (!user) {
+            req.session.destroy();
+            return res.redirect('/login');
+        }
+
+        res.render('pages/profile', {
+            layout: 'layouts/base',
+            title: 'User Profile | ROINAX GLOBAL',
+            extraCss: '/css/profile.css',
+            user
+        });
+    } catch (err) {
+        console.error('Profile route error:', err);
+        res.redirect('/');
+    }
 });
 
 export default router;

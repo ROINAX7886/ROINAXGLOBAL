@@ -107,7 +107,7 @@ ul {
     border-top-color: var(--green-lime);
     border-right-color: var(--green-main);
     animation: spin 0.9s linear infinite;
-    box-shadow: 0 0 28px rgba(130, 209, 43, 0.28);
+    /* box-shadow: 0 0 28px rgba(130, 209, 43, 0.28); */
 }
 
 .loader-brand {

@@ -92,62 +92,59 @@ if (heroVideo) {
     });
 }
 
-// --- Express Auth Session Check & Dynamic Header State ---
-document.addEventListener('DOMContentLoaded', async () => {
+// --- Express Auth Session Check (Dynamic Header State) ---
+async function checkAuthStatus() {
     const desktopGuest = document.getElementById('desktop-guest-actions');
     const desktopUser = document.getElementById('desktop-user-actions');
     const mobileGuest = document.getElementById('mobile-guest-actions');
     const mobileUser = document.getElementById('mobile-user-actions');
-    const userGreeting = document.getElementById('user-greeting');
-    const mobileUserGreeting = document.getElementById('mobile-user-greeting');
-    const desktopLogout = document.getElementById('desktop-logout-btn');
-    const mobileLogout = document.getElementById('mobile-logout-btn');
 
     try {
         const res = await fetch('/api/auth/me');
-        const result = await res.json();
+        const data = await res.json();
 
-        if (res.ok && result.data && result.data.id) {
-            const firstName = result.data.name.split(' ')[0];
+        // Checks for authenticated state matching getMe controller response
+        const isAuthenticated = res.ok && ((data.authenticated && data.user) || (data.data && data.data.id));
 
-            if (userGreeting) userGreeting.innerHTML = `<i class="fa-regular fa-circle-user"></i> ${firstName}`;
-            if (mobileUserGreeting) mobileUserGreeting.innerHTML = `<i class="fa-regular fa-circle-user"></i> ${result.data.email}`;
-
+        if (isAuthenticated) {
+            // Hide Sign In / Sign Up buttons
             if (desktopGuest) desktopGuest.style.display = 'none';
-            if (desktopUser) desktopUser.style.display = 'flex';
             if (mobileGuest) mobileGuest.style.display = 'none';
+
+            // Show Only Profile Button
+            if (desktopUser) desktopUser.style.display = 'flex';
             if (mobileUser) mobileUser.style.display = 'flex';
+        } else {
+            // Revert back to Guest Sign In / Sign Up
+            if (desktopGuest) desktopGuest.style.display = 'flex';
+            if (mobileGuest) mobileGuest.style.display = 'flex';
+
+            // Hide Profile Button
+            if (desktopUser) desktopUser.style.display = 'none';
+            if (mobileUser) mobileUser.style.display = 'none';
         }
     } catch {
-        // Guest mode default remains intact
+        // Keep default guest actions visible if the request fails
+        if (desktopGuest) desktopGuest.style.display = 'flex';
+        if (mobileGuest) mobileGuest.style.display = 'flex';
+        if (desktopUser) desktopUser.style.display = 'none';
+        if (mobileUser) mobileUser.style.display = 'none';
     }
-
-    async function handleLogout() {
-        try {
-            await fetch('/api/auth/logout', { method: 'POST' });
-            window.location.reload();
-        } catch (err) {
-            console.error('Logout error:', err);
-        }
-    }
-
-    if (desktopLogout) desktopLogout.addEventListener('click', handleLogout);
-    if (mobileLogout) mobileLogout.addEventListener('click', handleLogout);
-});
+}
 
 // --- Global Accordion Component ---
 function initAccordions() {
     const faqTriggers = document.querySelectorAll('.faq-trigger');
     if (!faqTriggers.length) return;
 
-    faqTriggers.forEach(trigger => {
+    faqTriggers.forEach((trigger) => {
         trigger.addEventListener('click', () => {
             const currentItem = trigger.closest('.faq-item');
             const currentPanel = currentItem.querySelector('.faq-panel');
             const isCurrentlyActive = currentItem.classList.contains('active');
 
-            // Close siblings
-            document.querySelectorAll('.faq-item').forEach(item => {
+            // Close sibling accordion items
+            document.querySelectorAll('.faq-item').forEach((item) => {
                 item.classList.remove('active');
                 const btn = item.querySelector('.faq-trigger');
                 if (btn) btn.setAttribute('aria-expanded', 'false');
@@ -155,7 +152,7 @@ function initAccordions() {
                 if (panel) panel.style.maxHeight = null;
             });
 
-            // Toggle selected item
+            // Expand selected item if it wasn't open
             if (!isCurrentlyActive) {
                 currentItem.classList.add('active');
                 trigger.setAttribute('aria-expanded', 'true');
@@ -165,5 +162,8 @@ function initAccordions() {
     });
 }
 
-// Run on initial page load
-document.addEventListener('DOMContentLoaded', initAccordions);
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuthStatus();
+    initAccordions();
+});

@@ -46,8 +46,8 @@ app.use(
 );
 
 // Mount routes
-app.use('/', pageRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/', pageRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
