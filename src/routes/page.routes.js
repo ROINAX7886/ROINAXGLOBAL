@@ -136,10 +136,21 @@ router.get('/profile', requireAuth, async (req, res) => {
 });
 
 router.get('/cart', ensureAuth, (req, res) => {
-  res.render('pages/cart', {
-    title: 'Procurement Cart - ROINAX Global',
-    user: req.session.user
-  });
+    res.render('pages/cart', {
+        title: 'Procurement Cart - ROINAX Global',
+        user: req.session.user,
+        layout: 'layouts/base',
+        extraCss: '/css/cart.css'
+    });
+});
+
+// GET /change-password
+router.get('/change-password', ensureAuth, (req, res) => {
+    res.render('pages/change-password', {
+        title: 'Change Password - ROINAX Global',
+        user: req.session.user,
+        extraCss: ['/css/password-change.css']
+    });
 });
 
 export default router;

@@ -1,7 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../lib/prisma.js'; // Use the shared singleton instance
 
 // POST /api/auth/signup
 export const signup = async (req, res) => {
@@ -53,10 +51,15 @@ export const signup = async (req, res) => {
       email: newUser.email
     };
 
-    return res.status(201).json({
-      success: true,
-      message: 'Account created successfully.',
-      redirectUrl: '/'
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error on signup:', err);
+      }
+      return res.status(201).json({
+        success: true,
+        message: 'Account created successfully.',
+        redirectUrl: '/'
+      });
     });
   } catch (error) {
     console.error('Signup Error:', error);
@@ -85,7 +88,7 @@ export const login = async (req, res) => {
       where: { email: normalizedEmail }
     });
 
-    if (!user) {
+    if (!user || !user.passwordHash) {
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password.'
@@ -107,10 +110,21 @@ export const login = async (req, res) => {
       email: user.email
     };
 
-    return res.status(200).json({
-      success: true,
-      message: 'Signed in successfully.',
-      redirectUrl: '/'
+    // Ensure session is saved to store before returning response
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error on login:', err);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to establish user session.'
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Signed in successfully.',
+        redirectUrl: '/'
+      });
     });
   } catch (error) {
     console.error('Login Error:', error);
@@ -122,18 +136,15 @@ export const login = async (req, res) => {
 };
 
 // POST /api/auth/logout
-// POST /api/auth/logout
 export const logout = (req, res) => {
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     if (err) {
       console.error('Session destroy error:', err);
       return res.redirect('/profile');
     }
 
-    // Clear the session cookie
     res.clearCookie('roinax_sid', { path: '/' });
 
-    // Handle AJAX/fetch callers (if any) or standard browser form submissions
     if (req.xhr || req.headers.accept?.includes('application/json')) {
       return res.status(200).json({ success: true, redirectUrl: '/login' });
     }

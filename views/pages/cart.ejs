@@ -282,4 +282,26 @@
 
         renderCart();
     });
+
+    // Syncs localStorage items up to PostgreSQL via Express API
+    async function syncCartWithServer() {
+        const localItems = JSON.parse(localStorage.getItem('roinax_cart')) || [];
+
+        try {
+            const res = await fetch('/api/cart/sync', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ items: localItems })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                console.log('Cart successfully synced with Supabase:', data);
+            }
+        } catch (err) {
+            console.warn('Cart server sync skipped (offline or unauthenticated):', err);
+        }
+    }
 </script>

@@ -11,13 +11,26 @@ model User {
   id           String    @id @default(uuid())
   name         String
   email        String    @unique
-  passwordHash String    @map("password_hash")
+  passwordHash String?   @map("password_hash") // Optional because Google users won't have a local password
+  googleId     String?   @unique @map("google_id")
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
 
   cart         Cart?
 
   @@map("users")
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  type      String   // "SIGNUP" or "FORGOT_PASSWORD"
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([email, type])
+  @@map("otps")
 }
 
 model Cart {
