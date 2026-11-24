@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', (req, res) => {
     res.render('pages/index', {
         layout: 'layouts/base',
-        title: 'RCHINAX Global | End-to-End Business Solutions',
+        title: 'ROINAX Global | End-to-End Business Solutions',
     });
 });
 
