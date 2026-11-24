@@ -41,4 +41,60 @@ router.get('/services/logo-branding', (req, res) => {
     });
 });
 
+router.get('/services/web-ecommerce', (req, res) => {
+    res.render('pages/web-ecommerce', {
+        layout: 'layouts/base',
+        title: 'Website Development & E-Commerce | ROINAX GLOBAL',
+        extraCss: '/css/web-ecommerce.css'
+    });
+});
+
+router.get('/services/domain-hosting', (req, res) => {
+    res.render('pages/domain-hosting', {
+        layout: 'layouts/base',
+        title: 'Domain Registration & Hosting | ROINAX GLOBAL',
+        extraCss: '/css/domain-hosting.css'
+    });
+});
+
+router.get('/services/logistics-courier', (req, res) => {
+    res.render('pages/logistics-courier', {
+        layout: 'layouts/base',
+        title: 'Global Logistics & Courier | ROINAX GLOBAL',
+        extraCss: '/css/logistics-courier.css'
+    });
+});
+
+router.get('/services/legal-compliance', (req, res) => {
+    res.render('pages/legal-compliance', {
+        layout: 'layouts/base',
+        title: 'Legal & Compliance Documentation | ROINAX GLOBAL',
+        extraCss: '/css/legal-compliance.css'
+    });
+});
+
+router.get('/services/banking-insurance', (req, res) => {
+    res.render('pages/banking-insurance', {
+        layout: 'layouts/base',
+        title: 'Business Banking & Insurance | ROINAX GLOBAL',
+        extraCss: '/css/banking-insurance.css'
+    });
+});
+
+router.get('/services/franchise-consulting', (req, res) => {
+    res.render('pages/franchise-consulting', {
+        layout: 'layouts/base',
+        title: 'Franchise Strategy & Consulting | ROINAX GLOBAL',
+        extraCss: '/css/franchise-consulting.css'
+    });
+});
+
+router.get('/services/digital-marketing', (req, res) => {
+    res.render('pages/digital-marketing', {
+        layout: 'layouts/base',
+        title: 'Digital Marketing & Growth | ROINAX GLOBAL',
+        extraCss: '/css/digital-marketing.css'
+    });
+});
+
 export default router;

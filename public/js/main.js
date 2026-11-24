@@ -134,3 +134,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (desktopLogout) desktopLogout.addEventListener('click', handleLogout);
     if (mobileLogout) mobileLogout.addEventListener('click', handleLogout);
 });
+
+// --- Global Accordion Component ---
+function initAccordions() {
+    const faqTriggers = document.querySelectorAll('.faq-trigger');
+    if (!faqTriggers.length) return;
+
+    faqTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const currentItem = trigger.closest('.faq-item');
+            const currentPanel = currentItem.querySelector('.faq-panel');
+            const isCurrentlyActive = currentItem.classList.contains('active');
+
+            // Close siblings
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+                const btn = item.querySelector('.faq-trigger');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+                const panel = item.querySelector('.faq-panel');
+                if (panel) panel.style.maxHeight = null;
+            });
+
+            // Toggle selected item
+            if (!isCurrentlyActive) {
+                currentItem.classList.add('active');
+                trigger.setAttribute('aria-expanded', 'true');
+                currentPanel.style.maxHeight = currentPanel.scrollHeight + 'px';
+            }
+        });
+    });
+}
+
+// Run on initial page load
+document.addEventListener('DOMContentLoaded', initAccordions);
