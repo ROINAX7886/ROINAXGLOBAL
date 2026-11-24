@@ -33,21 +33,23 @@
 
 body {
     font-family: var(--font-main);
-    background-color: var(--light-bg);
-    color: var(--text-main);
+    color: #ffffff;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow-x: hidden;
+    background:
+        linear-gradient(rgba(10, 15, 12, 0.78), rgba(10, 15, 12, 0.88)),
+        url('/assets/images/about-building.png') center center / cover no-repeat fixed;
 }
 
 body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at 50% 20%, rgba(83, 169, 34, 0.08) 0%, rgba(244, 247, 245, 0.95) 70%);
+    background: radial-gradient(circle at 50% 25%, rgba(83, 169, 34, 0.18) 0%, transparent 65%);
     pointer-events: none;
     z-index: 0;
 }
@@ -64,7 +66,7 @@ body::before {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: var(--text-muted);
+    color: #c4d1c8;
     font-size: 0.84rem;
     font-weight: 500;
     text-decoration: none;
@@ -73,16 +75,25 @@ body::before {
 }
 
 .back-home-link:hover {
-    color: var(--green-dark);
+    color: var(--green-lime);
     transform: translateX(-3px);
 }
 
+/* --- Frosted Glass (Glassmorphism) Auth Card --- */
 .auth-card {
-    background: var(--light-card);
-    border: 1px solid var(--border-color);
+    /* Translucent dark glass */
+    background: rgba(18, 24, 20, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    /* Subtle highlighted glass borders */
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-top: 1px solid rgba(130, 209, 43, 0.35);
     border-radius: var(--radius-lg);
     padding: 38px 32px 34px;
-    box-shadow: 0 16px 40px rgba(22, 38, 25, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .brand-header {
@@ -128,15 +139,15 @@ body::before {
 .auth-heading h2 {
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--text-main);
     letter-spacing: -0.015em;
     margin-bottom: 6px;
+    color: #ffffff;
 }
 
 .auth-heading p {
     font-size: 0.85rem;
-    color: var(--text-muted);
     line-height: 1.45;
+    color: #a2b0a6;
 }
 
 .error-banner {
@@ -168,14 +179,14 @@ label {
     display: block;
     font-size: 0.82rem;
     font-weight: 500;
-    color: #2b3830;
+    color: #dbe4df;
     margin-bottom: 6px;
 }
 
 .input-hint {
     display: block;
     font-size: 0.74rem;
-    color: #798780;
+    color: #8b9990;
     margin-top: 5px;
 }
 
@@ -210,29 +221,32 @@ label {
 .input-wrap input {
     width: 100%;
     padding: 12px 42px 12px 40px;
-    background: var(--light-input);
-    border: 1.5px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-md);
-    color: var(--text-main);
+    color: #ffffff;
     font-family: var(--font-main);
     font-size: 0.9rem;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .input-wrap input::placeholder {
-    color: #a4b0a8;
+    color: #7d8c82;
 }
 
 .input-wrap input:focus {
-    background: #ffffff;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(83, 169, 34, 0.15);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--green-lime);
+    box-shadow: 0 0 0 3px rgba(130, 209, 43, 0.2);
 }
 
-.input-wrap input:focus+.input-icon,
+.input-icon {
+    color: #8b9990;
+}
+
 .input-wrap:focus-within .input-icon {
-    color: var(--green-dark);
+    color: var(--green-lime);
 }
 
 .password-toggle {
@@ -240,7 +254,7 @@ label {
     right: 12px;
     background: transparent;
     border: none;
-    color: #8a9890;
+    color: #8b9990;
     cursor: pointer;
     padding: 4px;
     font-size: 0.9rem;
@@ -248,7 +262,7 @@ label {
 }
 
 .password-toggle:hover {
-    color: var(--text-main);
+    color: #ffffff;
 }
 
 .btn-auth-submit {
@@ -286,13 +300,13 @@ label {
     text-align: center;
     margin-top: 24px;
     padding-top: 20px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a2b0a6;
     font-size: 0.83rem;
-    color: var(--text-muted);
 }
 
 .auth-footer a {
-    color: var(--green-dark);
+    color: var(--green-lime);
     font-weight: 600;
     text-decoration: none;
     margin-left: 4px;
@@ -300,7 +314,7 @@ label {
 }
 
 .auth-footer a:hover {
-    color: var(--green-main);
+    color: #ffffff;
     text-decoration: underline;
 }
 
