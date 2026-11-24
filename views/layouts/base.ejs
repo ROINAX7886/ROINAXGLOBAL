@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <%= typeof title !=='undefined' ? title : 'RCHINAX Global | End-to-End Business Solutions' %>
+        <%= typeof title !=='undefined' ? title : 'ROINAX Global | End-to-End Business Solutions' %>
     </title>
     <link rel="icon" type="image/png" href="/assets/images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,11 +13,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Base Global Stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Optional Page-Specific Stylesheet -->
     <% if (typeof extraCss !=='undefined' ) { %>
         <link rel="stylesheet" href="<%= extraCss %>">
         <% } %>
-</head>
 </head>
 
 <body>
@@ -25,7 +28,7 @@
         <div class="loader-inner">
             <div class="loader-ring"></div>
             <div class="loader-brand">
-                <span class="loader-title">RCHINAX</span>
+                <span class="loader-title">ROINAX</span>
                 <span class="loader-sub">GLOBAL</span>
             </div>
             <div class="loader-bar">
