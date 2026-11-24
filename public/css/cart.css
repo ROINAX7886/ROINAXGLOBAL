@@ -1,0 +1,425 @@
+/* --- ROINAX GLOBAL Standalone Cart Styles --- */
+.cart-page {
+    background: var(--bg-soft, #f7f9f7);
+    min-height: calc(100vh - 160px);
+    padding: 40px 0 80px;
+}
+
+.cart-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.cart-page-header h1 {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 800;
+    color: #111a13;
+}
+
+.cart-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+.cart-table-card {
+    background: #ffffff;
+    border: 1px solid #e3e8e5;
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px 28px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+}
+
+.cart-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #edf2ee;
+    margin-bottom: 14px;
+}
+
+.cart-card-header h2 {
+    font-size: 1.15rem;
+    color: #111a13;
+    font-weight: 700;
+}
+
+.btn-clear-link {
+    background: transparent;
+    border: none;
+    color: #d9534f;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-clear-link:hover {
+    opacity: 0.8;
+}
+
+/* Item Rows */
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f1f4f2;
+    gap: 16px;
+}
+
+.row-info h4 {
+    font-size: 0.95rem;
+    color: #111a13;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.unit-price {
+    font-size: 0.82rem;
+    color: #6a7c6f;
+}
+
+.row-controls {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dce4de;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.qty-btn {
+    background: #f7faf8;
+    border: none;
+    width: 28px;
+    height: 28px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #111a13;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.qty-btn:hover {
+    background: #e2ede5;
+}
+
+.qty-display {
+    width: 32px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #111a13;
+}
+
+.row-total {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #111a13;
+    min-width: 85px;
+    text-align: right;
+}
+
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: #a8b8ad;
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.remove-btn:hover {
+    color: #d9534f;
+}
+
+/* Summary Card */
+.cart-checkout-card {
+    background: #ffffff;
+    border: 1px solid #e3e8e5;
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px 28px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+}
+
+.cart-checkout-card h2 {
+    font-size: 1.15rem;
+    color: #111a13;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #edf2ee;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #5d6f63;
+    margin-bottom: 12px;
+}
+
+.summary-line span:last-child {
+    font-weight: 700;
+    color: #111a13;
+}
+
+.text-free {
+    color: var(--green-main, #53a922) !important;
+    font-weight: 800;
+}
+
+.summary-separator {
+    height: 1px;
+    background: #e3e8e5;
+    margin: 16px 0;
+}
+
+.total-line {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111a13;
+    margin-bottom: 4px;
+}
+
+.total-line span:last-child {
+    color: #111a13;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.cart-cta-actions {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-whatsapp-order {
+    background: #25d366;
+    color: #ffffff;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn-whatsapp-order:hover {
+    background: #1eb857;
+    color: #ffffff;
+}
+
+.secure-badge {
+    display: block;
+    text-align: center;
+    font-size: 0.74rem;
+    color: #8fa094;
+    margin-top: 14px;
+}
+
+/* Empty State */
+.empty-cart-state {
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e3e8e5;
+    border-radius: var(--radius-lg, 12px);
+    padding: 60px 20px;
+}
+
+.empty-cart-state i {
+    font-size: 3.5rem;
+    color: #b0c2b5;
+    margin-bottom: 16px;
+}
+
+.empty-cart-state h2 {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+}
+
+.empty-cart-state p {
+    color: #6a7c6f;
+    margin-bottom: 22px;
+}
+
+/* ========================================================
+   MODALS (Hides popups until explicitly activated by JS)
+   ======================================================== */
+.custom-modal {
+    display: none !important;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-modal.active {
+    display: flex !important;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 18, 12, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 1;
+}
+
+.modal-dialog {
+    position: relative;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 32px 28px;
+    max-width: 440px;
+    width: 90%;
+    z-index: 2;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    animation: modalPop 0.25s ease-out;
+}
+
+@keyframes modalPop {
+    from {
+        transform: scale(0.92);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 1.6rem;
+    line-height: 1;
+    background: transparent;
+    border: none;
+    color: #8b9d90;
+    cursor: pointer;
+}
+
+.modal-icon-header {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(83, 169, 34, 0.12);
+    color: var(--green-main, #53a922);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.modal-dialog h3 {
+    font-size: 1.25rem;
+    color: #111a13;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.modal-dialog p {
+    font-size: 0.88rem;
+    color: #617267;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.modal-auth-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* QR Code Modal Dialog */
+.qr-dialog {
+    max-width: 420px;
+}
+
+.qr-box {
+    background: #f7faf8;
+    border: 1px solid #dce8df;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px 0;
+}
+
+.qr-image {
+    width: 200px;
+    height: 200px;
+    background: #ffffff;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #e3e8e5;
+    margin-bottom: 12px;
+}
+
+.qr-amount-pill {
+    font-size: 1.1rem;
+    color: #111a13;
+    margin-bottom: 4px;
+}
+
+.qr-amount-pill strong {
+    color: var(--green-dark, #2b6113);
+}
+
+.upi-id-box {
+    font-size: 0.82rem;
+    color: #6a7c6f;
+}
+
+.qr-steps {
+    text-align: left;
+    background: #edf5ef;
+    border-radius: 8px;
+    padding: 12px 14px 12px 28px;
+    margin-bottom: 18px;
+}
+
+.qr-steps ol {
+    margin: 0;
+    padding: 0;
+    font-size: 0.78rem;
+    color: #3b4e42;
+    line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+    .cart-layout-grid {
+        grid-template-columns: 1fr;
+    }
+}

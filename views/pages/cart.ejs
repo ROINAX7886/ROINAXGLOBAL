@@ -1,0 +1,285 @@
+<main class="cart-page">
+    <div class="container">
+        <div class="cart-page-header">
+            <h1><i class="fa-solid fa-cart-shopping"></i> Review Your <span class="text-lime">Procurement Basket</span>
+            </h1>
+            <a href="/buy-now" class="btn btn-ghost"><i class="fa-solid fa-arrow-left"></i> Continue Shopping</a>
+        </div>
+
+        <div class="cart-layout-grid" id="cartLayoutGrid">
+            <!-- Items List -->
+            <div class="cart-table-card">
+                <div class="cart-card-header">
+                    <h2>Selected Devices & Hardware</h2>
+                    <button type="button" id="clearCartBtn" class="btn-clear-link">Clear Basket</button>
+                </div>
+                <div class="cart-items-container" id="cartItemsContainer">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Order Summary & Checkout -->
+            <aside class="cart-checkout-card">
+                <h2>Procurement Summary</h2>
+                <div class="summary-line">
+                    <span>Devices Subtotal</span>
+                    <span id="summarySubtotal">₹0</span>
+                </div>
+                <div class="summary-line">
+                    <span>GST (18% Statutory)</span>
+                    <span id="summaryTax">₹0</span>
+                </div>
+                <div class="summary-line">
+                    <span>Courier / Dispatch</span>
+                    <span class="text-free">FREE</span>
+                </div>
+                <div class="summary-separator"></div>
+                <div class="summary-line total-line">
+                    <span>Total Amount</span>
+                    <span id="summaryGrandTotal">₹0</span>
+                </div>
+
+                <div class="cart-cta-actions">
+                    <button type="button" id="openPayQrBtn" class="btn btn-green btn-block">
+                        <i class="fa-solid fa-qrcode"></i> Pay via UPI QR Code
+                    </button>
+                    <button type="button" id="whatsappInquiryBtn" class="btn btn-whatsapp-order btn-block">
+                        <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                    </button>
+                </div>
+                <small class="secure-badge"><i class="fa-solid fa-lock"></i> Direct Merchant UPI Verification</small>
+            </aside>
+        </div>
+
+        <!-- Empty Cart Display -->
+        <div class="empty-cart-state" id="emptyCartState" style="display: none;">
+            <i class="fa-solid fa-box-open"></i>
+            <h2>Your basket is empty</h2>
+            <p>Browse our catalog of biometric devices, MicroATMs, and RD licenses to build an order.</p>
+            <a href="/buy-now" class="btn btn-green">Browse Hardware Catalog</a>
+        </div>
+    </div>
+
+    <!-- Modal 1: Auth Gate (Guest prompt) -->
+    <div class="custom-modal" id="authGateModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog">
+            <button type="button" class="modal-close" data-close>&times;</button>
+            <div class="modal-icon-header"><i class="fa-solid fa-user-lock"></i></div>
+            <h3>Account Required to Complete Order</h3>
+            <p>Please log in or register your enterprise profile before checking out with a payment QR code.</p>
+            <div class="modal-auth-actions">
+                <a href="/login" class="btn btn-outline-dark-sm btn-block">Sign In</a>
+                <a href="/signup" class="btn btn-green btn-block">Create New Account</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Dynamic UPI QR Code Scanner -->
+    <div class="custom-modal" id="qrModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog qr-dialog">
+            <button type="button" class="modal-close" data-close>&times;</button>
+            <div class="qr-header">
+                <h3>Scan & Pay via UPI</h3>
+                <p>Compatible with PhonePe, Paytm, Google Pay, and BHIM.</p>
+            </div>
+
+            <div class="qr-box">
+                <img id="qrImage" src="" alt="UPI QR Code" class="qr-image">
+                <div class="qr-amount-pill">
+                    Amount: <strong id="qrTotalDisplay">₹0</strong>
+                </div>
+                <div class="upi-id-box">
+                    <span>Merchant VPA: <strong>roinaxglobal@upi</strong></span>
+                </div>
+            </div>
+
+            <div class="qr-steps">
+                <ol>
+                    <li>Scan this QR using your banking/UPI application.</li>
+                    <li>Complete the payment and click below to notify our team on WhatsApp with your UTR and shipping
+                        address.</li>
+                </ol>
+            </div>
+
+            <button type="button" id="confirmPaidWhatsAppBtn" class="btn btn-whatsapp-order btn-block">
+                <i class="fa-brands fa-whatsapp"></i> Confirm Payment on WhatsApp
+            </button>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        let cart = JSON.parse(localStorage.getItem('roinax_cart')) || [];
+        let currentUser = null;
+
+        try {
+            const res = await fetch('/api/auth/me');
+            const data = await res.json();
+            if (data.authenticated && data.user) currentUser = data.user;
+        } catch { }
+
+        const container = document.getElementById('cartItemsContainer');
+        const layout = document.getElementById('cartLayoutGrid');
+        const emptyState = document.getElementById('emptyCartState');
+
+        function formatINR(val) {
+            return '₹' + Number(val).toLocaleString('en-IN');
+        }
+
+        function renderCart() {
+            if (cart.length === 0) {
+                layout.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            layout.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            let html = '';
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const rowTotal = item.price * item.qty;
+                subtotal += rowTotal;
+
+                html += `
+                <div class="cart-row" data-id="${item.id}">
+                    <div class="row-info">
+                        <h4>${item.name}</h4>
+                        <span class="unit-price">${formatINR(item.price)} each</span>
+                    </div>
+                    <div class="row-controls">
+                        <div class="qty-control">
+                            <button type="button" class="qty-btn dec-btn" data-id="${item.id}">-</button>
+                            <span class="qty-display">${item.qty}</span>
+                            <button type="button" class="qty-btn inc-btn" data-id="${item.id}">+</button>
+                        </div>
+                        <div class="row-total">${formatINR(rowTotal)}</div>
+                        <button type="button" class="remove-btn" data-id="${item.id}"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+
+            const tax = Math.round(subtotal * 0.18);
+            const grand = subtotal + tax;
+
+            document.getElementById('summarySubtotal').textContent = formatINR(subtotal);
+            document.getElementById('summaryTax').textContent = formatINR(tax);
+            document.getElementById('summaryGrandTotal').textContent = formatINR(grand);
+        }
+
+        function saveCart() {
+            localStorage.setItem('roinax_cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        // Row Events
+        container.addEventListener('click', (e) => {
+            const dec = e.target.closest('.dec-btn');
+            const inc = e.target.closest('.inc-btn');
+            const rem = e.target.closest('.remove-btn');
+
+            if (dec) {
+                const idx = cart.findIndex(i => i.id === dec.dataset.id);
+                if (idx > -1) {
+                    if (cart[idx].qty > 1) cart[idx].qty -= 1;
+                    else cart.splice(idx, 1);
+                    saveCart();
+                }
+            } else if (inc) {
+                const idx = cart.findIndex(i => i.id === inc.dataset.id);
+                if (idx > -1) {
+                    cart[idx].qty += 1;
+                    saveCart();
+                }
+            } else if (rem) {
+                const idx = cart.findIndex(i => i.id === rem.dataset.id);
+                if (idx > -1) {
+                    cart.splice(idx, 1);
+                    saveCart();
+                }
+            }
+        });
+
+        document.getElementById('clearCartBtn').addEventListener('click', () => {
+            if (confirm('Clear all devices from the basket?')) {
+                cart = [];
+                saveCart();
+            }
+        });
+
+        // Modals
+        const authModal = document.getElementById('authGateModal');
+        const qrModal = document.getElementById('qrModal');
+
+        function openModal(m) {
+            m.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(m) {
+            m.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('[data-close]').forEach(b => {
+            b.addEventListener('click', () => closeModal(b.closest('.custom-modal')));
+        });
+
+        document.querySelectorAll('.modal-backdrop').forEach(bg => {
+            bg.addEventListener('click', () => closeModal(bg.closest('.custom-modal')));
+        });
+
+        // QR Checkout
+        document.getElementById('openPayPayQrBtn', 'openPayQrBtn')
+        const payBtn = document.getElementById('openPayQrBtn');
+        if (payBtn) {
+            payBtn.addEventListener('click', () => {
+                if (cart.length === 0) return;
+                if (!currentUser) {
+                    openModal(authModal);
+                    return;
+                }
+
+                const sub = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+                const total = sub + Math.round(sub * 0.18);
+
+                const upiUri = `upi://pay?pa=roinaxglobal@upi&pn=ROINAX+GLOBAL&am=${total}&cu=INR&tn=ROINAX-DEV-${Date.now()}`;
+                document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(upiUri)}`;
+                document.getElementById('qrTotalDisplay').textContent = formatINR(total);
+
+                openModal(qrModal);
+            });
+        }
+
+        // WhatsApp Message
+        function sendWhatsApp(prepaid = false) {
+            let text = prepaid ? "*PAYMENT COMPLETED - HARDWARE ORDER*%0A%0A" : "*HARDWARE INQUIRY*%0A%0A";
+            if (currentUser) text += `*Customer:* ${currentUser.name}%0A*Email:* ${currentUser.email}%0A%0A`;
+            text += "*Items:*%0A";
+
+            let sub = 0;
+            cart.forEach((item, i) => {
+                const t = item.price * item.qty;
+                sub += t;
+                text += `${i + 1}. ${item.name} (x${item.qty}) - ₹${t.toLocaleString('en-IN')}%0A`;
+            });
+
+            const grand = sub + Math.round(sub * 0.18);
+            text += `%0A*Grand Total (incl 18% GST):* ₹${grand.toLocaleString('en-IN')}%0A`;
+            if (prepaid) text += "%0A*Status:* QR Paid. Attaching transaction screenshot & pincode.";
+
+            window.open(`https://wa.me/917318692999?text=${text}`, '_blank');
+        }
+
+        document.getElementById('confirmPaidWhatsAppBtn').addEventListener('click', () => sendWhatsApp(true));
+        document.getElementById('whatsappInquiryBtn').addEventListener('click', () => sendWhatsApp(false));
+
+        renderCart();
+    });
+</script>

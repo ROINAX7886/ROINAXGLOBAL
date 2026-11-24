@@ -1,426 +1,339 @@
-<main class="buy-page">
-    <!-- Hero Banner -->
-    <section class="buy-hero">
-        <div class="hero-glow-orb"></div>
-        <div class="container buy-hero-inner">
-            <div class="eyebrow dark center">
-                <span class="eyebrow-line"></span>
-                <span class="eyebrow-green">Enterprise Marketplace</span>
-                <span class="eyebrow-line"></span>
-            </div>
-            <h1>Corporate Solutions & <span class="text-lime">Package Procurement</span></h1>
-            <p class="buy-hero-desc">
-                Select from our standardized business launch, digital engineering, and corporate infrastructure tiers.
-                Build your solution bundle and checkout instantly.
-            </p>
-        </div>
-    </section>
+<%- contentFor('body') %>
 
-    <!-- Products & Cart Section -->
-    <section class="catalog-section">
-        <div class="container">
-            <div class="catalog-layout">
-                <!-- Products Grid -->
-                <div class="products-container">
-                    <div class="catalog-header">
-                        <h2>Available Service Bundles</h2>
-                        <span class="catalog-counter" id="itemCount">Showing 6 Enterprise Solutions</span>
-                    </div>
+    <section class="buy-hardware-page">
+        <!-- Header Hero Banner -->
+        <div class="hardware-hero">
+            <div class="container text-center">
+                <span class="hero-tag"><i class="fa-solid fa-shield-halved"></i> Authorized Hardware Procurement</span>
+                <h1>Enterprise Banking & Biometric Devices</h1>
+                <p>UIDAI L0 & L1 certified biometric fingerprint scanners, MicroATM mPOS terminals, and official RD
+                    service tokens for CSP retail kiosks and banking points.</p>
 
-                    <div class="products-grid">
-                        <!-- Product 1 -->
-                        <article class="product-card" data-id="pkg-identity" data-name="Brand Identity & Trademark Kit"
-                            data-price="14999">
-                            <div class="product-badge">Branding</div>
-                            <div class="product-icon-wrap">
-                                <i class="fa-solid fa-gem"></i>
-                            </div>
-                            <div class="product-info">
-                                <h3>Brand Identity & Trademark Kit</h3>
-                                <p>Vector brand identity system, commercial typography guidelines, color palette, and
-                                    Class 35/42 trademark application filing.</p>
-                                <ul class="product-features">
-                                    <li><i class="fa-solid fa-check"></i> 3 Custom Vector Concepts</li>
-                                    <li><i class="fa-solid fa-check"></i> Complete Brand Style Guide</li>
-                                    <li><i class="fa-solid fa-check"></i> Trademark Filing Assistance</li>
-                                </ul>
-                            </div>
-                            <div class="product-footer">
-                                <div class="price-box">
-                                    <span class="currency">₹</span>
-                                    <span class="amount">14,999</span>
-                                </div>
-                                <button type="button" class="btn btn-green add-to-cart-btn">
-                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </article>
-
-                        <!-- Product 2 -->
-                        <article class="product-card" data-id="pkg-web" data-name="Full-Stack Web & Headless Commerce"
-                            data-price="29999">
-                            <div class="product-badge">Engineering</div>
-                            <div class="product-icon-wrap">
-                                <i class="fa-solid fa-laptop-code"></i>
-                            </div>
-                            <div class="product-info">
-                                <h3>Full-Stack Web & E-Commerce</h3>
-                                <p>Custom SSR Node.js/Express web platform, PostgreSQL database architecture,
-                                    high-conversion product catalog, and payment integration.</p>
-                                <ul class="product-features">
-                                    <li><i class="fa-solid fa-check"></i> Up to 10 Responsive Pages</li>
-                                    <li><i class="fa-solid fa-check"></i> Payment Gateway (UPI / Cards)</li>
-                                    <li><i class="fa-solid fa-check"></i> Admin Management Dashboard</li>
-                                </ul>
-                            </div>
-                            <div class="product-footer">
-                                <div class="price-box">
-                                    <span class="currency">₹</span>
-                                    <span class="amount">29,999</span>
-                                </div>
-                                <button type="button" class="btn btn-green add-to-cart-btn">
-                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </article>
-
-                        <!-- Product 3 -->
-                        <article class="product-card" data-id="pkg-cloud" data-name="NVMe Cloud & Domain Infrastructure"
-                            data-price="6999">
-                            <div class="product-badge">Infrastructure</div>
-                            <div class="product-icon-wrap">
-                                <i class="fa-solid fa-server"></i>
-                            </div>
-                            <div class="product-info">
-                                <h3>NVMe Cloud & Domain Infrastructure</h3>
-                                <p>Enterprise domain registration (.com/.in), 1-Year NVMe SSD cloud hosting, automated
-                                    daily snapshots, and 10 corporate mailboxes.</p>
-                                <ul class="product-features">
-                                    <li><i class="fa-solid fa-check"></i> 1x TLD Domain Provisioning</li>
-                                    <li><i class="fa-solid fa-check"></i> Wildcard SSL & Anycast DNS</li>
-                                    <li><i class="fa-solid fa-check"></i> 10 Branded Business Emails</li>
-                                </ul>
-                            </div>
-                            <div class="product-footer">
-                                <div class="price-box">
-                                    <span class="currency">₹</span>
-                                    <span class="amount">6,999</span>
-                                </div>
-                                <button type="button" class="btn btn-green add-to-cart-btn">
-                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </article>
-
-                        <!-- Product 4 -->
-                        <article class="product-card" data-id="pkg-incorporation"
-                            data-name="Pvt Ltd Entity & GST Incorporation" data-price="12499">
-                            <div class="product-badge">Legal</div>
-                            <div class="product-icon-wrap">
-                                <i class="fa-solid fa-scale-balanced"></i>
-                            </div>
-                            <div class="product-info">
-                                <h3>Pvt Ltd Entity & GST Incorporation</h3>
-                                <p>Complete MCA company registration, SPICe+ form documentation, 2 Director DIN & DSCs,
-                                    MOA/AOA, and GST certificate.</p>
-                                <ul class="product-features">
-                                    <li><i class="fa-solid fa-check"></i> Certificate of Incorporation (COI)</li>
-                                    <li><i class="fa-solid fa-check"></i> PAN, TAN & MSME Udyam</li>
-                                    <li><i class="fa-solid fa-check"></i> Corporate Bank Account Docs</li>
-                                </ul>
-                            </div>
-                            <div class="product-footer">
-                                <div class="price-box">
-                                    <span class="currency">₹</span>
-                                    <span class="amount">12,499</span>
-                                </div>
-                                <button type="button" class="btn btn-green add-to-cart-btn">
-                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </article>
-
-                        <!-- Product 5 -->
-                        <article class="product-card" data-id="pkg-banking"
-                            data-name="Merchant POS & Current Account Setup" data-price="4999">
-                            <div class="product-badge">Finance</div>
-                            <div class="product-icon-wrap">
-                                <i class="fa-solid fa-vault"></i>
-                            </div>
-                            <div class="product-info">
-                                <h3>Merchant POS & Current Account</h3>
-                                <p>Priority enterprise current account opening with Tier-1 banking partners,
-                                    soundbox/POS device dispatch, and T+1 payout clearance.</p>
-                                <ul class="product-features">
-                                    <li><i class="fa-solid fa-check"></i> Zero-Balance Current Account</li>
-                                    <li><i class="fa-solid fa-check"></i> Merchant Payment Gateway</li>
-                                    <li><i class="fa-solid fa-check"></i> Dedicated RM Assistance</li>
-                                </ul>
-                            </div>
-                            <div class="product-footer">
-                                <div class="price-box">
-                                    <span class="currency">₹</span>
-                                    <span class="amount">4,999</span>
-                                </div>
-                                <button type="button" class="btn btn-green add-to-cart-btn">
-                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </article>
-
-                        <!-- Product 6 -->
-                        <article class="product-card" data-id="pkg-growth"
-                            data-name="Performance PPC & Search Authority" data-price="19999">
-                            <div class="product-badge">Growth</div>
-                            <div class="product-icon-wrap">
-                                <i class="fa-solid fa-bullseye"></i>
-                            </div>
-                            <div class="product-info">
-                                <h3>Performance PPC & Search Authority</h3>
-                                <p>30-day dedicated paid customer acquisition setup, Google Ads Search/PMax campaigns,
-                                    Meta conversion API, and CRO landing audit.</p>
-                                <ul class="product-features">
-                                    <li><i class="fa-solid fa-check"></i> High-Intent Search Keyword Map</li>
-                                    <li><i class="fa-solid fa-check"></i> Meta & Google Ads Setup</li>
-                                    <li><i class="fa-solid fa-check"></i> Technical JSON-LD SEO Audit</li>
-                                </ul>
-                            </div>
-                            <div class="product-footer">
-                                <div class="price-box">
-                                    <span class="currency">₹</span>
-                                    <span class="amount">19,999</span>
-                                </div>
-                                <button type="button" class="btn btn-green add-to-cart-btn">
-                                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
-                        </article>
-                    </div>
+                <!-- Category Filter Tabs -->
+                <div class="category-tabs" id="categoryTabs">
+                    <button type="button" class="tab-btn active" data-filter="all">
+                        <i class="fa-solid fa-layer-group"></i> All Hardware
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="biometric">
+                        <i class="fa-solid fa-fingerprint"></i> Biometric Devices
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="microatm">
+                        <i class="fa-solid fa-credit-card"></i> MicroATM Devices
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="license">
+                        <i class="fa-solid fa-certificate"></i> RD Service & Licenses
+                    </button>
                 </div>
-
-                <!-- Sticky Order Summary / Cart Sidebar -->
-                <aside class="cart-sidebar">
-                    <div class="cart-card">
-                        <div class="cart-header">
-                            <h3><i class="fa-solid fa-bag-shopping"></i> Selected Packages</h3>
-                            <span class="cart-count-badge" id="cartCountBadge">0</span>
-                        </div>
-
-                        <div class="cart-items" id="cartItemsList">
-                            <div class="cart-empty-view">
-                                <i class="fa-solid fa-cart-flatbed"></i>
-                                <p>Your order basket is empty.<br>Select a package to start procurement.</p>
-                            </div>
-                        </div>
-
-                        <div class="cart-summary" id="cartSummary" style="display: none;">
-                            <div class="summary-row">
-                                <span>Subtotal</span>
-                                <span id="cartSubtotal">₹0</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Estimated GST (18%)</span>
-                                <span id="cartTax">₹0</span>
-                            </div>
-                            <div class="summary-divider"></div>
-                            <div class="summary-row total-row">
-                                <span>Estimated Total</span>
-                                <span id="cartGrandTotal">₹0</span>
-                            </div>
-
-                            <div class="checkout-actions">
-                                <button type="button" id="proceedCheckoutBtn" class="btn btn-green btn-block">
-                                    <span>Procure via Desk</span>
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </button>
-                                <button type="button" id="whatsappCheckoutBtn" class="btn btn-whatsapp-order btn-block">
-                                    <i class="fa-brands fa-whatsapp"></i> Confirm via WhatsApp
-                                </button>
-                                <button type="button" id="clearCartBtn" class="btn-clear-cart">
-                                    Clear all items
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
             </div>
         </div>
+
+        <!-- Main Catalog Grid -->
+        <div class="container catalog-section">
+            <div class="catalog-header-bar">
+                <h2>Certified Hardware Stock</h2>
+                <div class="catalog-meta">
+                    <span class="stock-badge">6 Models In Stock</span>
+                    <a href="/cart" class="header-cart-link">
+                        <i class="fa-solid fa-cart-shopping"></i> My Basket (<span class="cart-count">0</span>)
+                    </a>
+                </div>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                <!-- 1. Mantra MFS110 L1 -->
+                <article class="product-card" data-category="biometric" data-id="dev-mantra-mfs110"
+                    data-name="MFS110 L1 Biometric Device" data-price="3499">
+                    <div class="product-badge">L1 UIDAI Certified</div>
+                    <div class="product-img-box">
+                        <img src="/assets/images/devices/mantra-mfs110.jpeg" alt="MFS110 L1 Biometric Device"
+                            onerror="this.src='https://placehold.co/400x300/132216/82d12b?text=MFS110+Device'">
+                    </div>
+                    <div class="product-info">
+                        <span class="device-brand">MANTRA SOFTECH</span>
+                        <h3>MFS110 L1 Biometric Device</h3>
+                        <p>Latest UIDAI L1 compliant optical fingerprint scanner for AEPS cash withdrawals, Jeevan
+                            Pramaan, and Ayushman Bharat.</p>
+                        <ul class="device-specs">
+                            <li><i class="fa-solid fa-check"></i> 500 DPI Optical Sensor</li>
+                            <li><i class="fa-solid fa-check"></i> USB & Type-C OTG Cable Included</li>
+                            <li><i class="fa-solid fa-check"></i> Scratch-Free Optical Glass</li>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        <div class="price-box">
+                            <span class="currency">₹</span>
+                            <span class="amount">3,499</span>
+                        </div>
+                        <div class="card-action-wrap">
+                            <input type="number" class="qty-input" value="1" min="1" max="100">
+                            <button type="button" class="btn btn-green add-to-cart-btn">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 2. Morpho MSO 1300 E3 -->
+                <article class="product-card" data-category="biometric" data-id="dev-morpho-1300"
+                    data-name="Morpho MSO 1300 E3 Device" data-price="4299">
+                    <div class="product-badge">High Sensitivity</div>
+                    <div class="product-img-box">
+                        <img src="/assets/images/devices/morpho-1300.jpeg" alt="Morpho MSO 1300 E3 Device"
+                            onerror="this.src='https://placehold.co/400x300/132216/82d12b?text=Morpho+1300+E3'">
+                    </div>
+                    <div class="product-info">
+                        <span class="device-brand">IDEMIA (MORPHO)</span>
+                        <h3>Morpho MSO 1300 E3 Device</h3>
+                        <p>Industrial-grade biometric sensor with FBI PIV IQS certification. Best suited for elderly and
+                            faint fingerprint capture in rural banking.</p>
+                        <ul class="device-specs">
+                            <li><i class="fa-solid fa-check"></i> Built-in Cryptographic Engine</li>
+                            <li><i class="fa-solid fa-check"></i> Windows & Android Plug & Play</li>
+                            <li><i class="fa-solid fa-check"></i> Durable Polycarbonate Body</li>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        <div class="price-box">
+                            <span class="currency">₹</span>
+                            <span class="amount">4,299</span>
+                        </div>
+                        <div class="card-action-wrap">
+                            <input type="number" class="qty-input" value="1" min="1" max="100">
+                            <button type="button" class="btn btn-green add-to-cart-btn">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 3. Startek FM220U -->
+                <article class="product-card" data-category="biometric" data-id="dev-startek-fm220"
+                    data-name="Startek FM220U L1 Biometric Scanner" data-price="2999">
+                    <div class="product-badge">Fast Capture</div>
+                    <div class="product-img-box">
+                        <img src="/assets/images/devices/startek-fm220.jpeg" alt="Startek FM220U Biometric Scanner"
+                            onerror="this.src='https://placehold.co/400x300/132216/82d12b?text=Startek+FM220U'">
+                    </div>
+                    <div class="product-info">
+                        <span class="device-brand">STARTEK / ACPL</span>
+                        <h3>Startek FM220U Biometric Device</h3>
+                        <p>High-resolution CMOS optical fingerprint sensor with certified RD service for AEPS banking,
+                            PM-KMY, and CSC kiosk authentication.</p>
+                        <ul class="device-specs">
+                            <li><i class="fa-solid fa-check"></i> Live-Finger Detection (LFD)</li>
+                            <li><i class="fa-solid fa-check"></i> AES-256 Encrypted Transfer</li>
+                            <li><i class="fa-solid fa-check"></i> Low Power Consumption</li>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        <div class="price-box">
+                            <span class="currency">₹</span>
+                            <span class="amount">2,999</span>
+                        </div>
+                        <div class="card-action-wrap">
+                            <input type="number" class="qty-input" value="1" min="1" max="100">
+                            <button type="button" class="btn btn-green add-to-cart-btn">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 4. SecuGen Hamster Pro 20 -->
+                <article class="product-card" data-category="biometric" data-id="dev-secugen-hamster"
+                    data-name="SecuGen Hamster Pro 20 Scanner" data-price="3199">
+                    <div class="product-badge">Rugged Glass</div>
+                    <div class="product-img-box">
+                        <img src="/assets/images/devices/secugen-hamster.jpeg" alt="SecuGen Hamster Pro 20"
+                            onerror="this.src='https://placehold.co/400x300/132216/82d12b?text=SecuGen+Hamster'">
+                    </div>
+                    <div class="product-info">
+                        <span class="device-brand">SECUGEN CORPORATION</span>
+                        <h3>SecuGen Hamster Pro 20</h3>
+                        <p>Ultra-compact, heavy-duty optical fingerprint unit with patented SEIR prism technology and
+                            UIDAI Level-1 certified architecture.</p>
+                        <ul class="device-specs">
+                            <li><i class="fa-solid fa-check"></i> IP65 Dust & Water Splash Proof</li>
+                            <li><i class="fa-solid fa-check"></i> High Precision Auto-On Sensor</li>
+                            <li><i class="fa-solid fa-check"></i> Scratch & Impact Resistant</li>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        <div class="price-box">
+                            <span class="currency">₹</span>
+                            <span class="amount">3,199</span>
+                        </div>
+                        <div class="card-action-wrap">
+                            <input type="number" class="qty-input" value="1" min="1" max="100">
+                            <button type="button" class="btn btn-green add-to-cart-btn">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 5. Fino Mini MicroATM Terminal -->
+                <article class="product-card" data-category="microatm" data-id="dev-fino-microatm"
+                    data-name="Fino Mini MicroATM Terminal" data-price="3899">
+                    <div class="product-badge">Multi-Bank AEPS</div>
+                    <div class="product-img-box">
+                        <img src="/assets/images/devices/pax-d180.jpeg" alt="Fino Mini MicroATM Terminal"
+                            onerror="this.src='https://placehold.co/400x300/132216/82d12b?text=Mini+MicroATM'">
+                    </div>
+                    <div class="product-info">
+                        <span class="device-brand">FINO PAYMENTS / MPOS</span>
+                        <h3>Fino Mini MicroATM Terminal</h3>
+                        <p>Handheld mPOS terminal with color LCD display, integrated receipt slot, PIN encryption, and
+                            RuPay debit card clearance.</p>
+                        <ul class="device-specs">
+                            <li><i class="fa-solid fa-check"></i> Supports RuPay, Visa & MasterCard</li>
+                            <li><i class="fa-solid fa-check"></i> Dual Bluetooth & Type-C Sync</li>
+                            <li><i class="fa-solid fa-check"></i> Instant Commission Clearance</li>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        <div class="price-box">
+                            <span class="currency">₹</span>
+                            <span class="amount">3,899</span>
+                        </div>
+                        <div class="card-action-wrap">
+                            <input type="number" class="qty-input" value="1" min="1" max="100">
+                            <button type="button" class="btn btn-green add-to-cart-btn">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 6. RD Service License -->
+                <article class="product-card" data-category="license" data-id="lic-rd-service"
+                    data-name="Annual RD Service License" data-price="599">
+                    <div class="product-badge">Instant Activation</div>
+                    <div class="product-img-box">
+                        <img src="/assets/images/devices/rd-service.png" alt="Annual RD Service License"
+                            onerror="this.src='https://placehold.co/400x300/132216/82d12b?text=RD+Service+License'">
+                    </div>
+                    <div class="product-info">
+                        <span class="device-brand">UIDAI LICENSING</span>
+                        <h3>Annual RD Service License</h3>
+                        <p>Official 1-Year Registered Device (RD) validation and UIDAI server management token for any
+                            serial number.</p>
+                        <ul class="device-specs">
+                            <li><i class="fa-solid fa-check"></i> Direct UIDAI Whitelisting</li>
+                            <li><i class="fa-solid fa-check"></i> Digital Key via Email / SMS</li>
+                            <li><i class="fa-solid fa-check"></i> Remote Setup Support</li>
+                        </ul>
+                    </div>
+                    <div class="product-footer">
+                        <div class="price-box">
+                            <span class="currency">₹</span>
+                            <span class="amount">599</span>
+                        </div>
+                        <div class="card-action-wrap">
+                            <input type="number" class="qty-input" value="1" min="1" max="100">
+                            <button type="button" class="btn btn-green add-to-cart-btn">
+                                <i class="fa-solid fa-cart-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- Floating Checkout Pill Link -->
+        <a href="/cart" class="floating-cart-pill" id="floatingCartPill" style="display: none;">
+            <i class="fa-solid fa-basket-shopping"></i>
+            <span>Review Basket & Checkout</span>
+            <strong class="cart-pill-count">0</strong>
+        </a>
     </section>
-</main>
 
-<script>
-    // Embedded Cart Controller
-    document.addEventListener('DOMContentLoaded', () => {
-        let cart = JSON.parse(localStorage.getItem('roinax_cart')) || [];
+    <!-- Inline Script for Filtering, LocalStorage Basket Sync & Floating Pill -->
+    <script>
+        (function () {
+            const STORAGE_KEY = 'roinax_cart';
 
-        const cartItemsList = document.getElementById('cartItemsList');
-        const cartSummary = document.getElementById('cartSummary');
-        const cartCountBadge = document.getElementById('cartCountBadge');
-        const cartSubtotal = document.getElementById('cartSubtotal');
-        const cartTax = document.getElementById('cartTax');
-        const cartGrandTotal = document.getElementById('cartGrandTotal');
-        const clearCartBtn = document.getElementById('clearCartBtn');
-        const whatsappCheckoutBtn = document.getElementById('whatsappCheckoutBtn');
-        const proceedCheckoutBtn = document.getElementById('proceedCheckoutBtn');
-
-        function formatINR(val) {
-            return '₹' + Number(val).toLocaleString('en-IN');
-        }
-
-        function saveCart() {
-            localStorage.setItem('roinax_cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function renderCart() {
-            const count = cart.reduce((sum, item) => sum + item.qty, 0);
-            cartCountBadge.textContent = count;
-
-            if (cart.length === 0) {
-                cartItemsList.innerHTML = `
-                    <div class="cart-empty-view">
-                        <i class="fa-solid fa-cart-flatbed"></i>
-                        <p>Your order basket is empty.<br>Select a package to start procurement.</p>
-                    </div>`;
-                cartSummary.style.display = 'none';
-                return;
-            }
-
-            cartSummary.style.display = 'block';
-
-            let itemsHtml = '';
-            let subtotal = 0;
-
-            cart.forEach(item => {
-                const itemTotal = item.price * item.qty;
-                subtotal += itemTotal;
-
-                itemsHtml += `
-                    <div class="cart-item-row" data-id="${item.id}">
-                        <div class="cart-item-main">
-                            <h4>${item.name}</h4>
-                            <div class="cart-item-meta">
-                                <span>${formatINR(item.price)} each</span>
-                            </div>
-                        </div>
-                        <div class="cart-item-controls">
-                            <div class="qty-control">
-                                <button type="button" class="qty-btn dec-btn" data-id="${item.id}">-</button>
-                                <span class="qty-display">${item.qty}</span>
-                                <button type="button" class="qty-btn inc-btn" data-id="${item.id}">+</button>
-                            </div>
-                            <div class="cart-item-price">${formatINR(itemTotal)}</div>
-                        </div>
-                    </div>`;
-            });
-
-            cartItemsList.innerHTML = itemsHtml;
-
-            const tax = Math.round(subtotal * 0.18);
-            const grandTotal = subtotal + tax;
-
-            cartSubtotal.textContent = formatINR(subtotal);
-            cartTax.textContent = formatINR(tax);
-            cartGrandTotal.textContent = formatINR(grandTotal);
-        }
-
-        // Add to Cart
-        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const card = btn.closest('.product-card');
-                const id = card.dataset.id;
-                const name = card.dataset.name;
-                const price = Number(card.dataset.price);
-
-                const existingIndex = cart.findIndex(i => i.id === id);
-                if (existingIndex > -1) {
-                    cart[existingIndex].qty += 1;
-                } else {
-                    cart.push({ id, name, price, qty: 1 });
-                }
-
-                saveCart();
-
-                // Button visual feedback
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Added!';
-                btn.classList.add('btn-added');
-                setTimeout(() => {
-                    btn.innerHTML = originalHtml;
-                    btn.classList.remove('btn-added');
-                }, 1000);
-            });
-        });
-
-        // Quantity Changes & Item Removal
-        cartItemsList.addEventListener('click', (e) => {
-            const decBtn = e.target.closest('.dec-btn');
-            const incBtn = e.target.closest('.inc-btn');
-
-            if (decBtn) {
-                const id = decBtn.dataset.id;
-                const idx = cart.findIndex(i => i.id === id);
-                if (idx > -1) {
-                    if (cart[idx].qty > 1) {
-                        cart[idx].qty -= 1;
-                    } else {
-                        cart.splice(idx, 1);
-                    }
-                    saveCart();
-                }
-            } else if (incBtn) {
-                const id = incBtn.dataset.id;
-                const idx = cart.findIndex(i => i.id === id);
-                if (idx > -1) {
-                    cart[idx].qty += 1;
-                    saveCart();
+            function getLocalCart() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                } catch (e) {
+                    return [];
                 }
             }
-        });
 
-        // Clear Cart
-        if (clearCartBtn) {
-            clearCartBtn.addEventListener('click', () => {
-                if (confirm('Are you sure you want to clear your current cart?')) {
-                    cart = [];
-                    saveCart();
+            function saveLocalCart(items) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+                updateCartBadges();
+            }
+
+            function updateCartBadges() {
+                const items = getLocalCart();
+                const totalCount = items.reduce((sum, item) => sum + (parseInt(item.qty, 10) || 0), 0);
+
+                document.querySelectorAll('.cart-count').forEach(el => el.textContent = totalCount);
+
+                const pill = document.getElementById('floatingCartPill');
+                if (pill) {
+                    const countEl = pill.querySelector('.cart-pill-count');
+                    if (countEl) countEl.textContent = totalCount;
+                    pill.style.display = totalCount > 0 ? 'inline-flex' : 'none';
                 }
-            });
-        }
+            }
 
-        // WhatsApp Checkout
-        if (whatsappCheckoutBtn) {
-            whatsappCheckoutBtn.addEventListener('click', () => {
-                if (cart.length === 0) return;
+            // Category Tabs Filtering
+            const tabButtons = document.querySelectorAll('#categoryTabs .tab-btn');
+            const productCards = document.querySelectorAll('.product-card');
 
-                let message = "Hello ROINAX GLOBAL, I would like to place an order for the following packages:%0A%0A";
-                let subtotal = 0;
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
 
-                cart.forEach((item, index) => {
-                    const total = item.price * item.qty;
-                    subtotal += total;
-                    message += `${index + 1}. *${item.name}* (x${item.qty}) - ₹${total.toLocaleString('en-IN')}%0A`;
+                    const filter = btn.getAttribute('data-filter');
+                    productCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
                 });
-
-                const tax = Math.round(subtotal * 0.18);
-                const grand = subtotal + tax;
-
-                message += `%0A*Subtotal:* ₹${subtotal.toLocaleString('en-IN')}`;
-                message += `%0A*GST (18%):* ₹${tax.toLocaleString('en-IN')}`;
-                message += `%0A*Estimated Total:* ₹${grand.toLocaleString('en-IN')}`;
-                message += "%0A%0APlease confirm project timelines and billing requirements.";
-
-                window.open(`https://wa.me/917318692999?text=${message}`, '_blank');
             });
-        }
 
-        // Formal Desk Redirect
-        if (proceedCheckoutBtn) {
-            proceedCheckoutBtn.addEventListener('click', () => {
-                window.location.href = '/contact?intent=procurement';
+            // Add to Cart Handlers
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const card = this.closest('.product-card');
+                    const id = card.getAttribute('data-id');
+                    const name = card.getAttribute('data-name');
+                    const price = parseInt(card.getAttribute('data-price'), 10);
+                    const qtyInput = card.querySelector('.qty-input');
+                    const qty = Math.max(1, parseInt(qtyInput ? qtyInput.value : 1, 10) || 1);
+
+                    let cart = getLocalCart();
+                    const existingIndex = cart.findIndex(item => item.id === id);
+
+                    if (existingIndex > -1) {
+                        cart[existingIndex].qty += qty;
+                    } else {
+                        cart.push({ id, name, price, qty });
+                    }
+
+                    saveLocalCart(cart);
+
+                    // Button feedback
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fa-solid fa-check"></i> Added';
+                    this.style.background = '#111a13';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = '';
+                    }, 1000);
+                });
             });
-        }
 
-        renderCart();
-    });
-</script>
+            // Initialize badge counts on page render
+            document.addEventListener('DOMContentLoaded', updateCartBadges);
+            updateCartBadges();
+        })();
+    </script>

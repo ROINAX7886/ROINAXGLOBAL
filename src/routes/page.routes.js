@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { requireAuth, redirectIfAuth } from '../middleware/auth.middleware.js';
+import { ensureAuth } from '../middleware/auth.middleware.js';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -132,6 +133,13 @@ router.get('/profile', requireAuth, async (req, res) => {
         console.error('Profile route error:', err);
         res.redirect('/');
     }
+});
+
+router.get('/cart', ensureAuth, (req, res) => {
+  res.render('pages/cart', {
+    title: 'Procurement Cart - ROINAX Global',
+    user: req.session.user
+  });
 });
 
 export default router;
