@@ -1,10 +1,18 @@
-import { Router } from 'express';
-import { getCart, syncCart, removeCartItem, clearCart } from '../controllers/cart.controller.js';
+import express from 'express';
+import {
+    getCart,
+    addCartItem,
+    updateCartItemQty,
+    removeCartItem,
+    clearCart
+} from '../controllers/cart.controller.js';
 
-const router = Router();
+const router = express.Router();
 
+// Publicly reachable (Server-session tracks guest vs user automatically)
 router.get('/', getCart);
-router.post('/sync', syncCart);
+router.post('/add', addCartItem);
+router.post('/update-qty', updateCartItemQty);
 router.delete('/item/:deviceId', removeCartItem);
 router.delete('/clear', clearCart);
 

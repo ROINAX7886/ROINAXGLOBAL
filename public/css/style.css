@@ -380,7 +380,7 @@ ul {
     position: absolute;
     top: calc(100% + 14px);
     left: -12px;
-    min-width: 260px;
+    min-width: 300px;
     background: var(--white);
     border-radius: 12px;
     padding: 10px;

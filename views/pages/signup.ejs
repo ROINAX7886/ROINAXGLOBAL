@@ -1,84 +1,154 @@
-<section class="auth-section">
-    <div class="auth-card">
-        <h2 class="auth-title">Create ROINAX Account</h2>
-        <p class="auth-subtitle">Procure hardware & enterprise banking solutions</p>
+<div class="auth-wrapper">
+    <a href="/" class="back-home-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
 
-        <!-- STEP 1: Enter Registration Details -->
-        <form id="signupDetailsForm" class="auth-form">
+    <div class="auth-card">
+        <div class="brand-header">
+            <a href="/">
+                <img src="/assets/images/logo-white.png" alt="ROINAX Global" class="auth-brand-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="auth-fallback" style="display: none; font-size:1.3rem; font-weight:800; color:#fff;">
+                    ROINAX<span style="color:#53a922;">.</span></div>
+            </a>
+            <span class="auth-tag">REGISTER</span>
+        </div>
+
+        <div class="auth-heading">
+            <h2>Create Account</h2>
+            <p>Procure hardware & enterprise banking solutions</p>
+        </div>
+
+        <div id="errorBanner" class="error-banner" style="display: none;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="errorMessage">Registration error.</span>
+        </div>
+
+        <!-- STEP 1: Enter details and request OTP -->
+        <form id="signupDetailsForm" novalidate>
             <div class="form-group">
                 <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
-            </div>
-            <div class="form-group">
-                <label for="email">Work / Personal Email</label>
-                <input type="email" id="email" name="email" required placeholder="name@domain.com">
-            </div>
-            <div class="form-group">
-                <label for="password">Password (min 6 characters)</label>
-                <input type="password" id="password" name="password" minlength="6" required placeholder="••••••••">
+                <div class="input-wrap">
+                    <i class="fa-regular fa-user input-icon"></i>
+                    <input type="text" id="fullName" name="fullName" placeholder="John Doe" required
+                        autocomplete="name">
+                </div>
             </div>
 
-            <!-- Terms & Privacy Legal Statement -->
+            <div class="form-group">
+                <label for="email">Work Email</label>
+                <div class="input-wrap">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" placeholder="name@company.com" required
+                        autocomplete="email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" placeholder="At least 6 characters"
+                        minlength="6" required autocomplete="new-password">
+                    <button type="button" class="password-toggle" id="togglePassword"
+                        aria-label="Toggle password visibility">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+                <span class="input-hint">Must contain at least 6 characters.</span>
+            </div>
+
             <p class="terms-notice">
-                By clicking "Send Verification OTP", you agree to our
+                By signing up, you agree to our
                 <a href="/terms" target="_blank">Terms of Service</a> and
                 <a href="/privacy" target="_blank">Privacy Policy</a>.
             </p>
 
-            <button type="submit" id="btnSendOtp" class="btn-primary-auth">Send Verification OTP</button>
+            <button type="submit" class="btn-auth-submit" id="btnSendOtp">
+                <span>Create Account</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </form>
 
-        <!-- STEP 2: Verify OTP (Hidden Initially) -->
-        <form id="signupOtpForm" class="auth-form" style="display: none; margin-top: 1rem;">
+        <!-- STEP 2: Verify OTP (Appears immediately after requesting) -->
+        <form id="signupOtpForm" style="display: none; margin-top: 10px;" novalidate>
             <div class="alert-info">
                 OTP sent to <strong id="displayTargetEmail"></strong>
             </div>
+
             <div class="form-group">
-                <label for="otpCode">6-Digit Email Verification Code</label>
-                <input type="text" id="otpCode" name="otp" maxlength="6" required placeholder="123456"
-                    class="otp-input">
+                <label for="otpCode">6-Digit Verification Code</label>
+                <div class="input-wrap">
+                    <input type="text" id="otpCode" name="otp" maxlength="6" required placeholder="123456"
+                        class="otp-input">
+                </div>
             </div>
 
-            <button type="submit" id="btnVerifySignup" class="btn-primary-auth">Verify & Complete Signup</button>
-            <button type="button" id="btnBackToDetails" class="btn-text">Edit Details</button>
+            <button type="submit" class="btn-auth-submit" id="btnVerifySignup">
+                <span>Verify & Finish</span>
+                <i class="fa-solid fa-check"></i>
+            </button>
+            <button type="button" id="btnBackToDetails" class="btn-text">Edit registration details</button>
         </form>
 
         <div class="auth-divider"><span>OR</span></div>
 
-        <!-- Google OAuth Button -->
-        <a href="/api/auth/google" class="btn-google-auth">
+        <!-- Google OAuth Redirect -->
+        <a href="/api/auth/google?mode=signup" class="btn-google-auth">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
             <span>Continue with Google</span>
         </a>
 
-        <!-- Secondary consent notice for third-party auth -->
-        <p class="terms-notice" style="margin-top: 10px;">
-            By signing in with Google, you accept our <a href="/terms" target="_blank">Terms</a> and <a href="/privacy"
-                target="_blank">Privacy Policy</a>.
-        </p>
-
-        <p class="auth-footer">Already have an account? <a href="/login">Sign In</a></p>
+        <div class="auth-footer">
+            Already have an enterprise account?
+            <a href="/login">Sign in</a>
+        </div>
     </div>
-</section>
+</div>
 
 <script>
     const detailsForm = document.getElementById('signupDetailsForm');
     const otpForm = document.getElementById('signupOtpForm');
     const btnSendOtp = document.getElementById('btnSendOtp');
     const btnVerify = document.getElementById('btnVerifySignup');
+    const errorBanner = document.getElementById('errorBanner');
+    const errorMessage = document.getElementById('errorMessage');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        togglePassword.innerHTML = isPassword ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+    });
 
     let signupData = {};
 
     detailsForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        btnSendOtp.disabled = true;
-        btnSendOtp.innerText = 'Sending OTP...';
+        errorBanner.style.display = 'none';
 
-        signupData = {
-            name: document.getElementById('fullName').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            password: document.getElementById('password').value
-        };
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = passwordInput.value;
+
+        if (!fullName || !email || !password) {
+            errorMessage.textContent = 'Please fill out all required fields.';
+            errorBanner.style.display = 'flex';
+            return;
+        }
+
+        if (password.length < 6) {
+            errorMessage.textContent = 'Password must be at least 6 characters.';
+            errorBanner.style.display = 'flex';
+            return;
+        }
+
+        signupData = { fullName, email, password };
+
+        btnSendOtp.disabled = true;
+        btnSendOtp.innerHTML = '<span>Sending Code...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
             const res = await fetch('/api/auth/send-signup-otp', {
@@ -93,28 +163,42 @@
                 detailsForm.style.display = 'none';
                 otpForm.style.display = 'block';
             } else {
-                alert(data.message || 'Failed to send OTP.');
+                errorMessage.textContent = data.message || 'Failed to send OTP.';
+                errorBanner.style.display = 'flex';
             }
         } catch (err) {
-            alert('Network error while requesting verification code.');
+            errorMessage.textContent = 'Network error requesting OTP.';
+            errorBanner.style.display = 'flex';
         } finally {
             btnSendOtp.disabled = false;
-            btnSendOtp.innerText = 'Send Verification OTP';
+            btnSendOtp.innerHTML = '<span>Create Account</span> <i class="fa-solid fa-arrow-right"></i>';
         }
     });
 
     otpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        btnVerify.disabled = true;
-        btnVerify.innerText = 'Verifying...';
+        errorBanner.style.display = 'none';
 
         const otp = document.getElementById('otpCode').value.trim();
+        if (!otp || otp.length !== 6) {
+            errorMessage.textContent = 'Please enter a valid 6-digit verification code.';
+            errorBanner.style.display = 'flex';
+            return;
+        }
+
+        btnVerify.disabled = true;
+        btnVerify.innerHTML = '<span>Verifying...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
             const res = await fetch('/api/auth/verify-signup-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...signupData, otp })
+                body: JSON.stringify({
+                    name: signupData.fullName,
+                    email: signupData.email,
+                    password: signupData.password,
+                    otp
+                })
             });
             const data = await res.json();
 
@@ -129,13 +213,15 @@
                 }
                 window.location.href = data.redirectUrl || '/';
             } else {
-                alert(data.message || 'Invalid verification code.');
+                errorMessage.textContent = data.message || 'Invalid or expired OTP.';
+                errorBanner.style.display = 'flex';
             }
         } catch (err) {
-            alert('Server error verifying signup OTP.');
+            errorMessage.textContent = 'Verification error.';
+            errorBanner.style.display = 'flex';
         } finally {
             btnVerify.disabled = false;
-            btnVerify.innerText = 'Verify & Complete Signup';
+            btnVerify.innerHTML = '<span>Verify & Finish</span> <i class="fa-solid fa-check"></i>';
         }
     });
 

@@ -1,74 +1,138 @@
-<section class="auth-section">
+<div class="auth-wrapper">
+    <a href="/" class="back-home-link">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+
     <div class="auth-card">
-        <h2 class="auth-title">ROINAX Enterprise Portal</h2>
-        <p class="auth-subtitle">Sign in to manage devices & account</p>
+        <div class="brand-header">
+            <a href="/">
+                <img src="/assets/images/logo-white.png" alt="ROINAX Global" class="auth-brand-logo"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="auth-fallback" style="display: none; font-size:1.3rem; font-weight:800; color:#fff;">
+                    ROINAX<span style="color:#53a922;">.</span></div>
+            </a>
+            <span class="auth-tag">PORTAL</span>
+        </div>
 
-        <form id="loginForm" class="auth-form">
+        <div class="auth-heading">
+            <h2>Welcome back</h2>
+            <p>Access your enterprise hardware & service panel</p>
+        </div>
+
+        <div id="errorBanner" class="error-banner" style="display: none;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span id="errorMessage">Invalid email or password.</span>
+        </div>
+
+        <form id="loginForm" novalidate>
             <div class="form-group">
-                <label for="loginEmail">Email</label>
-                <input type="email" id="loginEmail" required placeholder="user@domain.com">
-            </div>
-            <div class="form-group">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <label for="loginPassword" style="margin:0;">Password</label>
-                    <a href="#" id="linkForgotPassword" class="forgot-link">Forgot?</a>
+                <label for="email">Work Email</label>
+                <div class="input-wrap">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" placeholder="name@company.com" required
+                        autocomplete="email">
                 </div>
-                <input type="password" id="loginPassword" required placeholder="••••••••">
             </div>
 
-            <button type="submit" id="btnLoginSubmit" class="btn-primary-auth">Sign In</button>
+            <div class="form-group">
+                <div class="label-split">
+                    <label for="password">Password</label>
+                    <a href="#" id="linkForgotPassword" class="forgot-link">Forgot password?</a>
+                </div>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" placeholder="••••••••••••" required
+                        autocomplete="current-password">
+                    <button type="button" class="password-toggle" id="togglePassword"
+                        aria-label="Toggle password visibility">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-auth-submit" id="submitBtn">
+                <span>Sign In</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </form>
 
         <div class="auth-divider"><span>OR</span></div>
 
-        <!-- Google OAuth Button -->
-        <a href="/api/auth/google" class="btn-google-auth">
+        <!-- Google OAuth Redirect -->
+        <a href="/api/auth/google?mode=login" class="btn-google-auth">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
             <span>Continue with Google</span>
         </a>
 
-        <p class="auth-footer">Don't have an account? <a href="/signup">Sign Up</a></p>
+        <div class="auth-footer">
+            Don't have an enterprise account?
+            <a href="/signup">Sign up</a>
+        </div>
     </div>
-</section>
+</div>
 
-<!-- Forgot Password Popup / Modal -->
+<!-- Forgot Password Modal Popup -->
 <div id="forgotModal" class="modal-backdrop" style="display: none;">
     <div class="modal-box">
         <h3>Reset Password</h3>
 
-        <!-- Phase 1: Request Reset OTP -->
         <div id="forgotStep1">
-            <p style="font-size: 0.9rem; color: #a0b3a5;">Enter your account email to receive a 6-digit reset code.</p>
-            <input type="email" id="forgotEmail" placeholder="user@domain.com" class="modal-input">
-            <button type="button" id="btnSendForgotOtp" class="btn-primary-auth" style="margin-top: 1rem;">Send Reset
-                Code</button>
+            <p style="font-size: 0.85rem; color: #a4b2a8; margin-bottom: 14px;">Enter your account email to receive a
+                6-digit reset code.</p>
+            <div class="input-wrap" style="margin-bottom: 14px;">
+                <i class="fa-regular fa-envelope input-icon"></i>
+                <input type="email" id="forgotEmail" placeholder="user@company.com">
+            </div>
+            <button type="button" id="btnSendForgotOtp" class="btn-auth-submit">Send Reset Code</button>
         </div>
 
-        <!-- Phase 2: Enter OTP & New Password -->
         <div id="forgotStep2" style="display: none;">
-            <p style="font-size: 0.9rem; color: #a0b3a5;">Enter the code sent to your email and your new password.</p>
-            <input type="text" id="resetOtp" placeholder="6-digit OTP" maxlength="6" class="modal-input"
-                style="margin-bottom: 0.75rem;">
-            <input type="password" id="resetNewPassword" placeholder="New Password (min 6 chars)" class="modal-input">
-            <button type="button" id="btnConfirmReset" class="btn-primary-auth" style="margin-top: 1rem;">Update
-                Password</button>
+            <p style="font-size: 0.85rem; color: #a4b2a8; margin-bottom: 14px;">Enter the code sent to your email and
+                your new password.</p>
+            <div class="input-wrap" style="margin-bottom: 12px;">
+                <input type="text" id="resetOtp" placeholder="6-digit OTP" maxlength="6" class="otp-input">
+            </div>
+            <div class="input-wrap" style="margin-bottom: 14px;">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input type="password" id="resetNewPassword" placeholder="New Password (min 6 chars)">
+            </div>
+            <button type="button" id="btnConfirmReset" class="btn-auth-submit">Update Password</button>
         </div>
 
-        <button type="button" id="btnCloseForgot" class="btn-text"
-            style="margin-top: 0.75rem; width: 100%;">Cancel</button>
+        <button type="button" id="btnCloseForgot" class="btn-text">Cancel</button>
     </div>
 </div>
 
 <script>
-    // 1. Regular Login Submission
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btnLoginSubmit');
-        btn.disabled = true;
-        btn.innerText = 'Signing In...';
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorBanner = document.getElementById('errorBanner');
+    const errorMessage = document.getElementById('errorMessage');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
 
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
+    togglePassword.addEventListener('click', () => {
+        const isPassword = passwordInput.getAttribute('type') === 'password';
+        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+        togglePassword.innerHTML = isPassword ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorBanner.style.display = 'none';
+
+        const email = document.getElementById('email').value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+            errorMessage.textContent = 'Please provide both email and password.';
+            errorBanner.style.display = 'flex';
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Signing In...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
             const res = await fetch('/api/auth/login', {
@@ -79,7 +143,6 @@
             const data = await res.json();
 
             if (res.ok && data.success) {
-                // Sync local basket to database immediately upon login
                 const localCart = JSON.parse(localStorage.getItem('roinax_cart')) || [];
                 if (localCart.length > 0) {
                     await fetch('/api/cart/sync', {
@@ -90,31 +153,34 @@
                 }
                 window.location.href = data.redirectUrl || '/';
             } else {
-                alert(data.message || 'Invalid credentials');
+                errorMessage.textContent = data.message || 'Authentication failed.';
+                errorBanner.style.display = 'flex';
             }
         } catch (err) {
-            alert('Login error. Please check server connection.');
+            errorMessage.textContent = 'Server connection error.';
+            errorBanner.style.display = 'flex';
         } finally {
-            btn.disabled = false;
-            btn.innerText = 'Sign In';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>';
         }
     });
 
-    // 2. Forgot Password Modal Workflow
-    const modal = document.getElementById('forgotModal');
+    // Forgot Password Flow
+    const forgotModal = document.getElementById('forgotModal');
+    let targetResetEmail = '';
+
     document.getElementById('linkForgotPassword').addEventListener('click', (e) => {
         e.preventDefault();
-        modal.style.display = 'flex';
-    });
-    document.getElementById('btnCloseForgot').addEventListener('click', () => {
-        modal.style.display = 'none';
+        forgotModal.style.display = 'flex';
     });
 
-    let targetResetEmail = '';
+    document.getElementById('btnCloseForgot').addEventListener('click', () => {
+        forgotModal.style.display = 'none';
+    });
 
     document.getElementById('btnSendForgotOtp').addEventListener('click', async () => {
         targetResetEmail = document.getElementById('forgotEmail').value.trim();
-        if (!targetResetEmail) return alert('Please enter an email.');
+        if (!targetResetEmail) return alert('Please enter your email.');
 
         const res = await fetch('/api/auth/forgot-password-otp', {
             method: 'POST',
@@ -122,11 +188,11 @@
             body: JSON.stringify({ email: targetResetEmail })
         });
         const data = await res.json();
-        if (res.ok) {
+        if (res.ok && data.success) {
             document.getElementById('forgotStep1').style.display = 'none';
             document.getElementById('forgotStep2').style.display = 'block';
         } else {
-            alert(data.message || 'Failed to send reset code.');
+            alert(data.message || 'Failed to dispatch code.');
         }
     });
 
@@ -135,7 +201,7 @@
         const newPassword = document.getElementById('resetNewPassword').value;
 
         if (!otp || newPassword.length < 6) {
-            return alert('Enter a valid 6-digit OTP and new password (min 6 characters).');
+            return alert('Enter 6-digit OTP and new password (min 6 chars).');
         }
 
         const res = await fetch('/api/auth/reset-password', {
@@ -144,12 +210,11 @@
             body: JSON.stringify({ email: targetResetEmail, otp, newPassword })
         });
         const data = await res.json();
-
         if (res.ok && data.success) {
-            alert('Password changed successfully! You may now log in.');
-            modal.style.display = 'none';
+            alert('Password reset successful. You can now login.');
+            forgotModal.style.display = 'none';
         } else {
-            alert(data.message || 'Password reset failed.');
+            alert(data.message || 'Reset failed.');
         }
     });
 </script>

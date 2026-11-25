@@ -26,11 +26,10 @@ model Otp {
   email     String
   code      String
   type      String   // "SIGNUP" or "FORGOT_PASSWORD"
-  expiresAt DateTime @map("expires_at")
-  createdAt DateTime @default(now()) @map("created_at")
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 
-  @@index([email, type])
-  @@map("otps")
+  @@index([email, code])
 }
 
 model Cart {
