@@ -13,6 +13,7 @@ model User {
   email        String    @unique
   passwordHash String?   @map("password_hash") // Optional because Google users won't have a local password
   googleId     String?   @unique @map("google_id")
+  avatarUrl    String?   @map("avatar_url")    // Cloudinary profile image URL
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
 

@@ -382,7 +382,7 @@
 .floating-cart-pill {
     position: fixed;
     bottom: 28px;
-    right: 28px;
+    left: 28px;
     z-index: 50;
     background: rgba(14, 22, 17, 0.94);
     border: 1px solid var(--card-border-top);

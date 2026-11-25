@@ -75,31 +75,38 @@
         </div>
     </div>
 
-    <!-- Modal 2: Dynamic UPI QR Code Scanner -->
+    <!-- Modal 2: Merchant UPI QR Code Checkout -->
     <div class="custom-modal" id="qrModal">
         <div class="modal-backdrop"></div>
         <div class="modal-dialog qr-dialog">
             <button type="button" class="modal-close" data-close>&times;</button>
             <div class="qr-header">
                 <h3>Scan & Pay via UPI</h3>
-                <p>Compatible with PhonePe, Paytm, Google Pay, and BHIM.</p>
+                <p>Compatible with PhonePe, Paytm, Google Pay, BHIM & Samsung Wallet.</p>
             </div>
 
             <div class="qr-box">
-                <img id="qrImage" src="" alt="UPI QR Code" class="qr-image">
-                <div class="qr-amount-pill">
-                    Amount: <strong id="qrTotalDisplay">₹0</strong>
+                <div class="qr-img-wrapper"
+                    style="background: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
+                    <img id="qrImage" src="/assets/images/qr.jpeg" alt="Samsung Wallet UPI QR Code" class="qr-image"
+                        style="width: 230px; height: auto; display: block; margin: 0 auto;"
+                        onerror="this.src='/assets/images/qr.jpg'">
                 </div>
-                <div class="upi-id-box">
-                    <span>Merchant VPA: <strong>roinaxglobal@upi</strong></span>
+                <div class="qr-amount-pill">
+                    Payable Amount: <strong id="qrTotalDisplay">₹0</strong>
+                </div>
+                <div class="upi-id-box" style="margin-top: 10px; line-height: 1.5;">
+                    <div>Beneficiary: <strong>WASIM KARIM</strong></div>
+                    <div>UPI ID: <strong style="color: #82d12b;">rxw@pingpay</strong></div>
                 </div>
             </div>
 
             <div class="qr-steps">
                 <ol>
-                    <li>Scan this QR using your banking/UPI application.</li>
-                    <li>Complete the payment and click below to notify our team on WhatsApp with your UTR and shipping
-                        address.</li>
+                    <li>Open any UPI application (GPay, PhonePe, Paytm, Samsung Wallet) and scan the QR code.</li>
+                    <li>Enter the exact amount shown above and confirm payment.</li>
+                    <li>Click below to notify our dispatch desk on WhatsApp with your payment UTR / screenshot and
+                        shipping details.</li>
                 </ol>
             </div>
 
@@ -112,7 +119,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        // Complete removal of legacy localStorage data
         localStorage.removeItem('roinax_cart');
 
         let cartItems = [];
@@ -126,17 +132,14 @@
             return '₹' + Number(val).toLocaleString('en-IN');
         }
 
-        // Fetch User and Hydrate Directly From Database
         async function loadServerCart() {
             try {
-                // Check Session Authentication
                 const authRes = await fetch('/api/auth/me');
                 const authData = await authRes.json();
                 if (authData.authenticated && authData.user) {
                     currentUser = authData.user;
                 }
 
-                // Fetch Database Cart Items
                 const cartRes = await fetch('/api/cart');
                 const cartData = await cartRes.json();
 
@@ -201,7 +204,6 @@
             document.getElementById('summaryGrandTotal').textContent = formatINR(grand);
         }
 
-        // Live Database Mutation Handlers
         container.addEventListener('click', async (e) => {
             const dec = e.target.closest('.dec-btn');
             const inc = e.target.closest('.inc-btn');
@@ -243,7 +245,6 @@
             }
         });
 
-        // Modals Management
         const authModal = document.getElementById('authGateModal');
         const qrModal = document.getElementById('qrModal');
 
@@ -264,7 +265,6 @@
             bg.addEventListener('click', () => closeModal(bg.closest('.custom-modal')));
         });
 
-        // UPI QR Checkout Action
         const payBtn = document.getElementById('openPayQrBtn');
         if (payBtn) {
             payBtn.addEventListener('click', () => {
@@ -278,15 +278,14 @@
                 const sub = cartItems.reduce((s, i) => s + (Number(i.price) * (i.quantity || 1)), 0);
                 const total = sub + Math.round(sub * 0.18);
 
-                const upiUri = `upi://pay?pa=roinaxglobal@upi&pn=ROINAX+GLOBAL&am=${total}&cu=INR&tn=ROINAX-DEV-${Date.now()}`;
-                document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(upiUri)}`;
+                const qrImg = document.getElementById('qrImage');
+                qrImg.src = '/assets/images/qr.jpeg';
                 document.getElementById('qrTotalDisplay').textContent = formatINR(total);
 
                 openModal(qrModal);
             });
         }
 
-        // WhatsApp Order Communication
         function sendWhatsApp(prepaid = false) {
             let text = prepaid ? "*PAYMENT COMPLETED - HARDWARE ORDER*%0A%0A" : "*HARDWARE INQUIRY*%0A%0A";
             if (currentUser) text += `*Customer:* ${currentUser.name}%0A*Email:* ${currentUser.email}%0A%0A`;
@@ -302,7 +301,9 @@
 
             const grand = sub + Math.round(sub * 0.18);
             text += `%0A*Grand Total (incl 18% GST):* ₹${grand.toLocaleString('en-IN')}%0A`;
-            if (prepaid) text += "%0A*Status:* QR Paid. Attaching transaction screenshot & shipping address.";
+            if (prepaid) {
+                text += "%0A*Payment Method:* UPI QR (WASIM KARIM / rxw@pingpay)%0A*Status:* Paid. Attaching transaction screenshot & address.";
+            }
 
             window.open(`https://wa.me/917318692999?text=${text}`, '_blank');
         }
@@ -310,7 +311,6 @@
         document.getElementById('confirmPaidWhatsAppBtn').addEventListener('click', () => sendWhatsApp(true));
         document.getElementById('whatsappInquiryBtn').addEventListener('click', () => sendWhatsApp(false));
 
-        // Initial Load
         loadServerCart();
     });
 </script>

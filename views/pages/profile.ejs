@@ -1,120 +1,195 @@
-<main class="profile-page">
-    <div class="container">
-        <!-- Profile Banner -->
-        <section class="profile-header-card">
-            <div class="profile-avatar-wrap">
-                <div class="profile-avatar">
-                    <%= user && user.name ? user.name.charAt(0).toUpperCase() : 'U' %>
-                </div>
-            </div>
-            <div class="profile-header-info">
-                <h1>
-                    <%= user ? user.name : 'Authorized User' %>
-                </h1>
-                <p class="profile-email"><i class="fa-regular fa-envelope"></i>
-                    <%= user ? user.email : '' %>
-                </p>
-                <div class="profile-badges">
-                    <span class="badge badge-verified"><i class="fa-solid fa-circle-check"></i> Verified
-                        Enterprise</span>
-                    <span class="badge badge-date">Member since <%= new Date(user ? user.createdAt :
-                            Date.now()).toLocaleDateString('en-US', { month: 'short' , year: 'numeric' }) %></span>
-                </div>
-            </div>
-            <div class="profile-header-action">
-                <form action="/api/auth/logout" method="POST" style="margin: 0; display: inline;">
-                    <button type="submit" class="btn btn-outline-danger">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
-                    </button>
-                </form>
-            </div>
-        </section>
+<div class="auth-card" style="max-width: 580px; margin: 2.5rem auto;">
+    <div class="brand-header">
+        <div class="brand-title-wrap">
+            <h2>Personal & Corporate Information</h2>
+            <span class="auth-tag">ACCOUNT</span>
+        </div>
+        <div class="header-actions-group">
+            <!-- Profile Cart Link Button -->
+            <a href="/cart" class="btn-profile-cart" id="profileCartBtn" title="View Procurement Basket">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Basket</span>
+                <span class="cart-pill-count" id="profileCartCount">0</span>
+            </a>
 
-        <!-- Profile Tabs Layout -->
-        <div class="profile-grid">
-            <!-- Sidebar Navigation -->
-            <aside class="profile-sidebar">
-                <nav class="profile-nav">
-                    <button type="button" class="nav-item active" data-tab="account">
-                        <i class="fa-regular fa-user"></i> Account Identity
-                    </button>
-                    <a href="/cart" class="nav-item">
-                        <i class="fa-solid fa-cart-shopping"></i> Saved Cart & Packages
-                    </a>
-                    <button type="button" class="nav-item" data-tab="security">
-                        <i class="fa-solid fa-shield-halved"></i> Credentials & Security
-                    </button>
-                </nav>
-            </aside>
-
-            <!-- Main Tab Views -->
-            <section class="profile-content">
-                <!-- Tab 1: Account Identity -->
-                <div class="tab-panel active" id="tab-account">
-                    <div class="panel-header">
-                        <h2>Personal & Corporate Information</h2>
-                        <p>Manage your account name and registered contact details.</p>
-                    </div>
-
-                    <div id="account-alert" class="auth-alert" style="display: none;"></div>
-
-                    <form id="accountForm" class="profile-form">
-                        <div class="form-group">
-                            <label for="profileName">Full Name / Representative</label>
-                            <input type="text" id="profileName" name="name" value="<%= user ? user.name : '' %>"
-                                required autocomplete="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="profileEmail">Registered Email</label>
-                            <input type="email" id="profileEmail" value="<%= user ? user.email : '' %>" disabled
-                                class="input-disabled">
-                            <small class="form-hint">Email address is permanently bound to this session ID.</small>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-green">Save Profile Updates</button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Tab 2: Saved Cart & Packages -->
-                <div class="tab-panel" id="tab-orders">
-                    <div class="panel-header">
-                        <h2>Active Cart & Reserved Solutions</h2>
-                        <p>Review packages currently staging in your procurement session.</p>
-                    </div>
-
-                    <div id="profileCartContainer">
-                        <!-- Populated by inline JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Tab 3: Security & Password -->
-                <div class="tab-panel" id="tab-security">
-                    <div class="panel-header">
-                        <h2>Credential Security</h2>
-                        <p>Ensure your account remains safeguarded with a secure passkey.</p>
-                    </div>
-
-                    <div id="security-alert" class="auth-alert" style="display: none;"></div>
-
-                    <form id="securityForm" class="profile-form">
-                        <div class="form-group">
-                            <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentPassword" name="currentPassword" required
-                                autocomplete="current-password">
-                        </div>
-                        <div class="form-group">
-                            <label for="newPassword">New Password</label>
-                            <input type="password" id="newPassword" name="newPassword" minlength="6" required
-                                autocomplete="new-password">
-                            <small class="form-hint">Minimum 6 alphanumeric characters.</small>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-green">Update Password</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
         </div>
     </div>
-</main>
+
+    <p style="color: #9cb1a4; font-size: 0.86rem; margin-bottom: 22px;">
+        Manage your representative name, official avatar, and registered contact details.
+    </p>
+
+    <div id="profileAlert" class="error-banner" style="display: none;"></div>
+
+    <form id="profileForm" enctype="multipart/form-data">
+        <!-- Avatar Upload & Live Preview -->
+        <div class="profile-avatar-wrap">
+            <div class="avatar-preview-box">
+                <img id="avatarPreview"
+                    src="<%= user && user.avatarUrl ? user.avatarUrl : '/assets/images/default-avatar.png' %>"
+                    alt="Profile Picture">
+            </div>
+            <div class="avatar-meta">
+                <label for="avatarInput" class="btn-upload-avatar">
+                    <i class="fa-solid fa-camera"></i> Change Photo
+                </label>
+                <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
+                <p class="avatar-tip">PNG, JPG, or WEBP up to 2MB.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fullName">Full Name / Representative</label>
+            <div class="input-wrap">
+                <i class="fa-regular fa-user input-icon"></i>
+                <input type="text" id="fullName" name="name" value="<%= user ? user.name : '' %>" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="userEmail">Registered Email</label>
+            <div class="input-wrap">
+                <i class="fa-regular fa-envelope input-icon"></i>
+                <input type="email" id="userEmail" value="<%= user ? user.email : '' %>" disabled>
+            </div>
+            <span class="input-hint">Email address is permanently bound to this session ID.</span>
+        </div>
+
+        <div class="profile-action-row">
+            <button type="submit" id="btnSaveProfile" class="btn-auth-submit">
+                <span>Save Profile Updates</span>
+                <i class="fa-solid fa-check"></i>
+            </button>
+        </div>
+    </form>
+
+    <!-- Account Session Termination Section -->
+    <div class="profile-danger-zone">
+        <div class="danger-info">
+            <h4>Session Security</h4>
+            <p>End your authenticated enterprise session on this terminal.</p>
+        </div>
+        <button type="button" class="btn-danger-logout" id="footerLogoutBtn">
+            <i class="fa-solid fa-power-off"></i>
+            <span>Sign Out</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const profileForm = document.getElementById('profileForm');
+        const btnSave = document.getElementById('btnSaveProfile');
+        const alertBox = document.getElementById('profileAlert');
+        const cartCountEl = document.getElementById('profileCartCount');
+
+        // Fetch live server cart count to update the badge
+        async function fetchCartCount() {
+            try {
+                const res = await fetch('/api/cart');
+                const data = await res.json();
+                if (data.success && Array.isArray(data.items)) {
+                    const totalCount = data.items.reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
+                    if (cartCountEl) cartCountEl.textContent = totalCount;
+                }
+            } catch (err) {
+                console.warn('Could not fetch cart status:', err);
+            }
+        }
+        fetchCartCount();
+
+        // Local instant preview with strict 2MB validation
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('File exceeds 2MB limit. Please choose a smaller image.');
+                avatarInput.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                avatarPreview.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Submit multipart FormData directly to server
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            alertBox.style.display = 'none';
+
+            const name = document.getElementById('fullName').value.trim();
+            if (!name) {
+                alertBox.textContent = 'Please provide a valid name.';
+                alertBox.className = 'error-banner error';
+                alertBox.style.display = 'flex';
+                return;
+            }
+
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<span>Saving...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+            const formData = new FormData();
+            formData.append('name', name);
+            if (avatarInput.files[0]) {
+                formData.append('avatar', avatarInput.files[0]);
+            }
+
+            try {
+                const res = await fetch('/api/auth/update-profile', {
+                    method: 'PUT',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    alertBox.className = 'error-banner success';
+                    alertBox.textContent = 'Profile successfully updated!';
+                    alertBox.style.display = 'flex';
+
+                    if (data.user && data.user.avatarUrl) {
+                        avatarPreview.src = data.user.avatarUrl;
+                    }
+                    avatarInput.value = '';
+                } else {
+                    alertBox.className = 'error-banner error';
+                    alertBox.textContent = data.message || 'Failed to update profile.';
+                    alertBox.style.display = 'flex';
+                }
+            } catch (err) {
+                alertBox.className = 'error-banner error';
+                alertBox.textContent = 'Network communication failure. Please verify server connection.';
+                alertBox.style.display = 'flex';
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = '<span>Save Profile Updates</span> <i class="fa-solid fa-check"></i>';
+            }
+        });
+
+        // Logout handler triggering POST /api/auth/logout
+        async function handleLogout() {
+            try {
+                const res = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+                window.location.href = data.redirectUrl || '/login';
+            } catch {
+                window.location.href = '/login';
+            }
+        }
+
+        const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+        const footerLogoutBtn = document.getElementById('footerLogoutBtn');
+
+        if (headerLogoutBtn) headerLogoutBtn.addEventListener('click', handleLogout);
+        if (footerLogoutBtn) footerLogoutBtn.addEventListener('click', handleLogout);
+    });
+</script>

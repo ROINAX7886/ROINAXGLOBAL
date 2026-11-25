@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 import prisma from '../lib/prisma.js';
 import { sendOtpEmail } from '../lib/mailer.js';
+import { uploadToCloudinary, extractPublicId, deleteFromCloudinary } from '../lib/cloudinary.js';
 
 const googleClient = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
@@ -93,7 +94,8 @@ export const login = async (req, res) => {
     req.session.user = {
       id: user.id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      avatarUrl: user.avatarUrl || null
     };
 
     req.session.save((err) => {
@@ -206,7 +208,12 @@ export const verifySignupOtp = async (req, res) => {
     req.session.cart = [];
 
     req.session.userId = user.id;
-    req.session.user = { id: user.id, name: user.name, email: user.email };
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatarUrl: null
+    };
 
     req.session.save(() => {
       res.status(201).json({
@@ -369,7 +376,7 @@ export const googleAuthCallback = async (req, res) => {
     });
 
     const payload = ticket.getPayload();
-    const { sub: googleId, email, name } = payload;
+    const { sub: googleId, email, name, picture } = payload;
     const normalizedEmail = email.toLowerCase().trim();
 
     let user = await prisma.user.findFirst({
@@ -389,14 +396,21 @@ export const googleAuthCallback = async (req, res) => {
         data: {
           name: name || 'Google Enterprise User',
           email: normalizedEmail,
-          googleId
+          googleId,
+          avatarUrl: picture || null
         }
       });
-    } else if (!user.googleId) {
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: { googleId }
-      });
+    } else {
+      const updates = {};
+      if (!user.googleId) updates.googleId = googleId;
+      if (!user.avatarUrl && picture) updates.avatarUrl = picture;
+
+      if (Object.keys(updates).length > 0) {
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: updates
+        });
+      }
     }
 
     // Merge session cart to Supabase user account
@@ -405,7 +419,12 @@ export const googleAuthCallback = async (req, res) => {
     req.session.cart = [];
 
     req.session.userId = user.id;
-    req.session.user = { id: user.id, name: user.name, email: user.email };
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatarUrl: user.avatarUrl || null
+    };
 
     req.session.save(() => {
       const target = req.session.returnTo || '/';
@@ -419,39 +438,84 @@ export const googleAuthCallback = async (req, res) => {
 };
 
 // ==========================================
-// 6. SESSION PROFILE & STATUS INSPECTION
+// 6. SESSION PROFILE & AVATAR UPDATES
 // ==========================================
 
 // PUT /api/auth/update-profile
 export const updateProfile = async (req, res) => {
   try {
-    if (!req.session?.userId) {
+    const userId = req.session?.userId;
+    if (!userId) {
       return res.status(401).json({ success: false, message: 'Unauthorized session.' });
     }
 
-    const { name } = req.body;
-    if (!name || !name.trim()) {
+    const name = (req.body.name || req.body.fullName)?.trim();
+    if (!name) {
       return res.status(400).json({ success: false, message: 'Name cannot be empty.' });
     }
 
-    const updatedUser = await prisma.user.update({
-      where: { id: req.session.userId },
-      data: { name: name.trim() }
+    // 1. Fetch current avatar to allow replacing/destroying previous upload
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { avatarUrl: true }
     });
 
-    if (req.session.user) {
-      req.session.user.name = updatedUser.name;
+    let avatarUrl = undefined;
+
+    // 2. Process image buffer directly with Cloudinary
+    if (req.file) {
+      if (existingUser?.avatarUrl) {
+        const oldPublicId = extractPublicId(existingUser.avatarUrl);
+        if (oldPublicId) {
+          await deleteFromCloudinary(oldPublicId);
+        }
+      }
+
+      const uploadResult = await uploadToCloudinary(req.file.buffer, 'roinax_avatars');
+      avatarUrl = uploadResult.secure_url;
     }
 
-    return res.status(200).json({
-      success: true,
-      message: 'Profile updated successfully.'
+    // 3. Persist name & optional avatar to Supabase
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name,
+        ...(avatarUrl && { avatarUrl }),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatarUrl: true,
+      },
+    });
+
+    // 4. Synchronize session cache
+    if (req.session.user) {
+      req.session.user.name = updatedUser.name;
+      if (updatedUser.avatarUrl) {
+        req.session.user.avatarUrl = updatedUser.avatarUrl;
+      }
+    }
+
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session update error:', err);
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'Profile updated successfully.',
+        user: updatedUser,
+      });
     });
   } catch (error) {
     console.error('Update Profile Error:', error);
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ success: false, message: 'File too large. Maximum size is 2MB.' });
+    }
     return res.status(500).json({
       success: false,
-      message: 'Server error updating profile.'
+      message: error.message || 'Server error updating profile.',
     });
   }
 };
@@ -473,6 +537,7 @@ export const getMe = async (req, res) => {
         id: true,
         name: true,
         email: true,
+        avatarUrl: true,
         createdAt: true
       }
     });

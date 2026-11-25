@@ -1,4 +1,5 @@
 import express from 'express';
+import { uploadAvatar } from '../lib/cloudinary.js';
 import {
     login,
     logout,
@@ -15,26 +16,26 @@ import {
 
 const router = express.Router();
 
-// Session / User status
 router.get('/me', getMe);
-router.put('/update-profile', updateProfile);
 
-// Standard Login & Logout
+// Attach multer upload middleware
+router.put('/update-profile', (req, res, next) => {
+    uploadAvatar.single('avatar')(req, res, (err) => {
+        if (err) {
+            console.error('Multer upload error:', err);
+            return res.status(400).json({ success: false, message: err.message });
+        }
+        next();
+    });
+}, updateProfile);
+
 router.post('/login', login);
 router.post('/logout', logout);
-
-// Email OTP Registration
 router.post('/send-signup-otp', sendSignupOtp);
 router.post('/verify-signup-otp', verifySignupOtp);
-
-// OTP Password Reset
 router.post('/forgot-password-otp', sendForgotOtp);
 router.post('/reset-password', resetPasswordWithOtp);
-
-// Authenticated Password Change
 router.post('/change-password', changePassword);
-
-// Google OAuth
 router.get('/google', googleAuthRedirect);
 router.get('/google/callback', googleAuthCallback);
 

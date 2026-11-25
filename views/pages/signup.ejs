@@ -46,17 +46,17 @@
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrap">
-                    <i class="fa-solid fa-lock input-icon"></i>
-                    <input type="password" id="password" name="password" placeholder="At least 6 characters"
-                        minlength="6" required autocomplete="new-password">
-                    <button type="button" class="password-toggle" id="togglePassword"
+                <label for="signupPassword">Password</label>
+                <div class="input-wrap" style="position: relative;">
+                    <i class="fa-solid fa-lock input-icon"
+                        style="position: absolute; left: 14px; pointer-events: none;"></i>
+                    <input type="password" id="signupPassword" name="password" class="has-toggle"
+                        placeholder="Minimum 6 characters" required>
+                    <button type="button" class="password-toggle-btn" data-target="signupPassword"
                         aria-label="Toggle password visibility">
                         <i class="fa-regular fa-eye"></i>
                     </button>
                 </div>
-                <span class="input-hint">Must contain at least 6 characters.</span>
             </div>
 
             <p class="terms-notice">
