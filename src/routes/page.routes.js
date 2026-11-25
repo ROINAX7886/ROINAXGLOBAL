@@ -159,4 +159,20 @@ router.get('/change-password', ensureAuth, (req, res) => {
     });
 });
 
+router.get('/privacy', (req, res) => {
+    res.render('pages/privacy', {
+        layout: 'layouts/base',
+        title: 'Privacy Policy | ROINAX Global',
+        extraCss: '/css/legal.css'
+    });
+});
+
+router.get('/terms', (req, res) => {
+    res.render('pages/terms', {
+        layout: 'layouts/base',
+        title: 'Terms of Service | ROINAX Global',
+        extraCss: '/css/legal.css'
+    });
+});
+
 export default router;

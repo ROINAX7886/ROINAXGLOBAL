@@ -8,6 +8,7 @@ import expressLayouts from 'express-ejs-layouts';
 import authRoutes from './routes/auth.routes.js';
 import pageRoutes from './routes/page.routes.js';
 import cartRoutes from './routes/cart.routes.js';
+import contactRoutes from './src/routes/contact.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +51,7 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/', pageRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

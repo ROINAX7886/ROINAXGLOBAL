@@ -94,8 +94,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="fullName">Full Name *</label>
-                                <input type="text" id="fullName" name="fullName" placeholder="Your Name"
-                                    required>
+                                <input type="text" id="fullName" name="fullName" placeholder="Your Name" required>
                             </div>
                             <div class="form-group">
                                 <label for="contactEmail">Work Email *</label>
@@ -143,3 +142,71 @@
         </div>
     </section>
 </main>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitContactBtn');
+        const statusBanner = document.getElementById('contact-status');
+
+        if (!contactForm || !submitBtn || !statusBanner) return;
+
+        function showStatus(message, isSuccess = true) {
+            statusBanner.textContent = message;
+            statusBanner.className = `contact-status-banner ${isSuccess ? 'success' : 'error'}`;
+            statusBanner.style.display = 'block';
+            statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            statusBanner.style.display = 'none';
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const contactEmail = document.getElementById('contactEmail').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const serviceSelect = document.getElementById('serviceInterest');
+            const serviceInterest = serviceSelect ? serviceSelect.value : '';
+            const message = document.getElementById('message').value.trim();
+
+            if (!fullName || !contactEmail || !message) {
+                showStatus('Please fill in your name, email, and message.', false);
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Sending...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                const res = await fetch('/api/contact/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        contactEmail,
+                        phone,
+                        serviceInterest,
+                        message
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    showStatus(data.message, true);
+                    contactForm.reset();
+                } else {
+                    showStatus(data.message || 'Failed to submit inquiry. Please try again.', false);
+                }
+            } catch (err) {
+                console.error('Contact Form Fetch Error:', err);
+                showStatus('Network error. You can also contact us directly via WhatsApp.', false);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Send Inquiry</span> <i class="fa-solid fa-paper-plane"></i>';
+            }
+        });
+    });
+</script>

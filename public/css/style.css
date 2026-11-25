@@ -1,9 +1,14 @@
+/* ==========================================================================
+   ROINAX Global - Core Stylesheet (style.css)
+   ========================================================================== */
+
 :root {
     --green-lime: #82d12b;
     --green-main: #53a922;
     --green-dark: #2f7d16;
     --green-grad: linear-gradient(90deg, #2d7a16 0%, #5cb524 55%, #84d32c 100%);
     --green-grad-hover: linear-gradient(90deg, #256811 0%, #4da11d 55%, #74c222 100%);
+
     --dark-bg: #0a0f0c;
     --dark-surface: #121714;
     --text-dark: #151918;
@@ -12,10 +17,14 @@
     --bg-soft: #f5f7f6;
     --white: #ffffff;
     --border-light: #e5e8e6;
+
     --shadow-card: 0 6px 24px rgba(15, 23, 18, 0.05);
     --shadow-card-hover: 0 16px 36px rgba(47, 125, 22, 0.14);
+    --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
+    --radius-pill: 999px;
+
     --font-main: 'Poppins', sans-serif;
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -74,7 +83,9 @@ ul {
     color: var(--green-main);
 }
 
-/* Preloader */
+/* ==========================================================================
+   Preloader & Scroll Progress
+   ========================================================================== */
 .preloader {
     position: fixed;
     inset: 0;
@@ -107,7 +118,6 @@ ul {
     border-top-color: var(--green-lime);
     border-right-color: var(--green-main);
     animation: spin 0.9s linear infinite;
-    /* box-shadow: 0 0 28px rgba(130, 209, 43, 0.28); */
 }
 
 .loader-brand {
@@ -138,7 +148,7 @@ ul {
     width: 160px;
     height: 3px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 99px;
+    border-radius: var(--radius-pill);
     overflow: hidden;
 }
 
@@ -146,7 +156,7 @@ ul {
     width: 45%;
     height: 100%;
     background: var(--green-grad);
-    border-radius: 99px;
+    border-radius: var(--radius-pill);
     animation: loadSlide 1.2s var(--ease) infinite;
 }
 
@@ -177,14 +187,16 @@ ul {
     transition: width 0.08s linear;
 }
 
-/* Button UI */
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     padding: 10px 22px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-family: var(--font-main);
     font-size: 0.88rem;
     font-weight: 600;
@@ -221,7 +233,7 @@ ul {
     justify-content: center;
     gap: 6px;
     padding: 8px 18px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-family: var(--font-main);
     font-size: 0.84rem;
     font-weight: 600;
@@ -242,6 +254,7 @@ ul {
 .btn-outline-light {
     background: rgba(15, 22, 18, 0.45);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: var(--white);
     border-color: rgba(255, 255, 255, 0.65);
 }
@@ -257,8 +270,8 @@ ul {
     font-size: 0.84rem;
     font-weight: 600;
     font-family: var(--font-main);
-    border: 1.5px solid #2f7d16;
-    border-radius: 999px;
+    border: 1.5px solid var(--green-dark);
+    border-radius: var(--radius-pill);
     background: transparent;
     color: var(--green-dark);
     cursor: pointer;
@@ -276,7 +289,7 @@ ul {
     font-weight: 600;
     font-size: 0.88rem;
     padding: 8px 16px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     transition: color 0.2s ease, background 0.2s ease;
 }
 
@@ -308,13 +321,16 @@ ul {
     font-size: 0.84rem;
 }
 
-/* Header & Nav */
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
 .site-header {
     position: sticky;
     top: 0;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     transition: box-shadow 0.3s ease, padding 0.3s ease;
 }
@@ -382,7 +398,7 @@ ul {
     left: -12px;
     min-width: 300px;
     background: var(--white);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     padding: 10px;
     box-shadow: 0 20px 45px rgba(10, 18, 12, 0.14);
     border: 1px solid var(--border-light);
@@ -408,7 +424,7 @@ ul {
     font-size: 0.84rem;
     font-weight: 500;
     color: #333b37;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
 }
 
@@ -430,7 +446,7 @@ ul {
     align-items: center;
     gap: 6px;
     padding: 6px 14px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: #eef8eb;
     border: 1px solid rgba(83, 169, 34, 0.3);
     color: var(--green-dark);
@@ -440,23 +456,6 @@ ul {
 
 .mobile-cta {
     display: none;
-}
-
-.mobile-auth-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    margin-top: 12px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border-light);
-}
-
-.mobile-auth-group .btn,
-.mobile-auth-group .btn-outline-dark-sm,
-.mobile-auth-group .btn-green-sm {
-    width: 100%;
-    text-align: center;
 }
 
 .hamburger {
@@ -492,7 +491,9 @@ ul {
     transform: translateY(-7.5px) rotate(-45deg);
 }
 
-/* Hero Section */
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
 .hero {
     position: relative;
     min-height: 540px;
@@ -578,7 +579,9 @@ ul {
     display: block;
 }
 
-/* Eyebrows & Sections */
+/* ==========================================================================
+   Eyebrows & Section Headings
+   ========================================================================== */
 .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -609,7 +612,9 @@ ul {
     border-radius: 2px;
 }
 
-/* About Section */
+/* ==========================================================================
+   About Section
+   ========================================================================== */
 .about-section {
     padding: 64px 0 82px;
     background: var(--white);
@@ -710,7 +715,9 @@ ul {
     line-height: 1.35;
 }
 
-/* Services */
+/* ==========================================================================
+   Services Section
+   ========================================================================== */
 .services-section {
     padding: 68px 0 80px;
     background: var(--bg-soft);
@@ -803,7 +810,9 @@ ul {
     box-shadow: 0 4px 12px rgba(83, 169, 34, 0.4);
 }
 
-/* Why Choose Us */
+/* ==========================================================================
+   Why Choose Us
+   ========================================================================== */
 .why-section {
     position: relative;
     padding: 68px 0 82px;
@@ -892,7 +901,9 @@ ul {
     line-height: 1.38;
 }
 
-/* Process */
+/* ==========================================================================
+   Process Section
+   ========================================================================== */
 .process-section {
     padding: 66px 0 56px;
     background: var(--white);
@@ -963,7 +974,9 @@ ul {
     flex-shrink: 0;
 }
 
-/* CTA */
+/* ==========================================================================
+   Call To Action (CTA)
+   ========================================================================== */
 .cta-section {
     padding: 12px 0 56px;
     background: var(--white);
@@ -1022,36 +1035,44 @@ ul {
     z-index: 1;
 }
 
-/* Footer */
+/* ==========================================================================
+   Global Site Footer
+   ========================================================================== */
 .site-footer {
-    background: #0b0e0d;
-    color: #b4bcb7;
-    padding: 22px 0;
+    background: #090f0b;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 36px 0 32px;
+    position: relative;
+    z-index: 10;
 }
 
 .footer-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 24px;
     flex-wrap: wrap;
 }
 
 .footer-logo img {
-    height: 40px;
+    height: 34px;
     width: auto;
+    object-fit: contain;
+    display: block;
 }
 
 .footer-links {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 0.82rem;
+    flex-wrap: wrap;
+    gap: 8px 12px;
 }
 
 .footer-links a {
-    color: #d5dcd8;
+    color: #9cb1a4;
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 500;
     transition: color 0.2s ease;
 }
 
@@ -1060,52 +1081,62 @@ ul {
 }
 
 .footer-links .sep {
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 0.78rem;
 }
 
 .footer-right {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .footer-socials {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .footer-socials a {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    color: var(--white);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9cb1a4;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.72rem;
-    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
 .footer-socials a:hover {
-    background: var(--green-main);
-    border-color: var(--green-main);
+    background: rgba(130, 209, 43, 0.15);
+    border-color: var(--green-lime);
+    color: var(--green-lime);
     transform: translateY(-2px);
 }
 
 .footer-divider {
+    display: inline-block;
     width: 1px;
-    height: 26px;
-    background: rgba(255, 255, 255, 0.18);
+    height: 20px;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .copyright {
-    font-size: 0.78rem;
-    color: #a6b0aa;
+    color: #6a7c70;
+    font-size: 0.8rem;
+    margin: 0;
+    white-space: nowrap;
 }
 
-/* Animations */
+/* ==========================================================================
+   Animations
+   ========================================================================== */
 .reveal-up,
 .reveal-left,
 .reveal-right {
@@ -1131,7 +1162,87 @@ ul {
     transform: translate(0, 0);
 }
 
-/* Responsive Breakpoints */
+/* ==========================================================================
+   Floating WhatsApp Quick-Contact Widget
+   ========================================================================== */
+.whatsapp-float {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 58px;
+    height: 58px;
+    background: #25d366;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+    z-index: 999;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 16px 30px rgba(37, 211, 102, 0.45);
+    color: #ffffff;
+}
+
+.whatsapp-float::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #25d366;
+    opacity: 0.6;
+    z-index: -1;
+    animation: wa-pulse 2.2s infinite;
+}
+
+.whatsapp-tooltip {
+    position: absolute;
+    right: 70px;
+    background: #111a13;
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid rgba(130, 209, 43, 0.3);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(8px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.whatsapp-float:hover .whatsapp-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+@keyframes wa-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+/* Large Tablets & Desktop Adjustments (<= 1080px) */
 @media (max-width: 1080px) {
     .about-grid {
         grid-template-columns: 1fr 1fr;
@@ -1168,23 +1279,32 @@ ul {
     }
 }
 
+/* Tablet & Mobile Breakpoint (<= 860px) */
 @media (max-width: 860px) {
-    .desktop-cta {
-        display: none;
+
+    /* Header & Navigation drawer */
+    .header-inner {
+        height: 68px;
+        justify-content: space-between;
+        gap: 16px;
     }
 
-    .mobile-cta {
-        display: block;
-        margin-top: 10px;
+    .brand-img {
+        height: 38px;
+    }
+
+    .header-actions .auth-buttons-group {
+        display: none !important;
     }
 
     .hamburger {
         display: flex;
+        margin-left: auto;
     }
 
     .main-nav {
         position: fixed;
-        top: 78px;
+        top: 68px;
         left: 0;
         right: 0;
         background: var(--white);
@@ -1195,6 +1315,7 @@ ul {
         opacity: 0;
         visibility: hidden;
         transition: all 0.35s var(--ease);
+        z-index: 999;
     }
 
     .main-nav.open {
@@ -1207,6 +1328,7 @@ ul {
         flex-direction: column;
         align-items: flex-start;
         gap: 14px;
+        width: 100%;
     }
 
     .dropdown-menu {
@@ -1224,288 +1346,6 @@ ul {
         display: block;
     }
 
-    .hero {
-        min-height: 480px;
-        padding: 70px 0 100px;
-    }
-
-    .hero-wave {
-        height: 75px;
-    }
-
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-highlights {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .why-pillars {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .pillar-item {
-        border-left: none;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.03);
-    }
-
-    .process-track {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .process-arrow {
-        transform: rotate(90deg);
-    }
-
-    .cta-box {
-        flex-direction: column;
-        text-align: center;
-        padding: 28px 22px;
-    }
-
-    .cta-left {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .footer-inner {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .footer-right {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .footer-divider {
-        display: none;
-    }
-}
-
-@media (max-width: 540px) {
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .why-pillars {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .hero-buttons .btn {
-        width: 100%;
-    }
-}
-
-/* Auth Cards for Login & Signup */
-.auth-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 24px;
-    background: radial-gradient(circle at center, #111f13 0%, #060908 85%);
-}
-
-.auth-card {
-    background-color: #121714;
-    border: 1px solid rgba(130, 209, 43, 0.2);
-    padding: 38px 32px;
-    border-radius: var(--radius-lg);
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-}
-
-.auth-card h2 {
-    color: var(--white);
-    font-size: 1.55rem;
-    margin-bottom: 6px;
-}
-
-.auth-card .subtitle {
-    color: var(--text-light);
-    font-size: 0.88rem;
-    margin-bottom: 22px;
-}
-
-.auth-card .form-group {
-    margin-bottom: 16px;
-}
-
-.auth-card label {
-    display: block;
-    font-size: 0.84rem;
-    color: var(--text-light);
-    margin-bottom: 6px;
-    font-weight: 500;
-}
-
-.auth-card input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: #0a0f0c;
-    color: var(--white);
-    font-size: 0.92rem;
-    outline: none;
-    transition: border-color 0.2s ease;
-}
-
-.auth-card input:focus {
-    border-color: var(--green-lime);
-}
-
-.auth-card .switch-auth {
-    margin-top: 22px;
-    font-size: 0.84rem;
-    text-align: center;
-    color: var(--text-light);
-}
-
-.auth-card .switch-auth a {
-    color: var(--green-lime);
-    font-weight: 600;
-}
-
-.error-msg {
-    color: #f87171;
-    font-size: 0.84rem;
-    margin-bottom: 14px;
-    min-height: 18px;
-}
-
-/* --- Floating WhatsApp Quick-Contact Widget --- */
-.whatsapp-float {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    width: 58px;
-    height: 58px;
-    background: #25d366;
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
-    z-index: 999;
-    text-decoration: none;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
-
-.whatsapp-float:hover {
-    transform: translateY(-4px) scale(1.08);
-    box-shadow: 0 16px 30px rgba(37, 211, 102, 0.45);
-    color: #ffffff;
-}
-
-/* Subtle Ping Pulse Effect */
-.whatsapp-float::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: #25d366;
-    opacity: 0.6;
-    z-index: -1;
-    animation: wa-pulse 2.2s infinite;
-}
-
-/* Interactive Hover Tooltip */
-.whatsapp-tooltip {
-    position: absolute;
-    right: 70px;
-    background: #111a13;
-    color: #ffffff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    white-space: nowrap;
-    border: 1px solid rgba(130, 209, 43, 0.3);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(8px);
-    transition: all 0.25s ease;
-    pointer-events: none;
-}
-
-.whatsapp-float:hover .whatsapp-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-}
-
-@keyframes wa-pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.6;
-    }
-    100% {
-        transform: scale(1.6);
-        opacity: 0;
-    }
-}
-
-/* Responsive adjustment for small mobile viewports */
-@media (max-width: 768px) {
-    .whatsapp-float {
-        width: 50px;
-        height: 50px;
-        font-size: 28px;
-        bottom: 20px;
-        right: 20px;
-    }
-
-    .whatsapp-tooltip {
-        right: 60px;
-        font-size: 0.72rem;
-        padding: 5px 12px;
-    }
-}
-
-@media (max-width: 860px) {
-
-    /* 1. Hide the desktop auth button group on mobile headers */
-    .header-actions .auth-buttons-group {
-        display: none !important;
-    }
-
-    /* 2. Show the hamburger toggle cleanly on the right */
-    .hamburger {
-        display: flex;
-        margin-left: auto;
-    }
-
-    /* 3. Keep the header layout tight and in a single row */
-    .header-inner {
-        height: 68px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-    }
-
-    .brand-img {
-        height: 38px;
-    }
-
-    /* 4. Display the mobile auth buttons inside the open dropdown drawer */
     .mobile-cta {
         display: block;
         width: 100%;
@@ -1526,5 +1366,137 @@ ul {
     .mobile-auth-group .btn-green-sm {
         width: 100%;
         text-align: center;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: 480px;
+        padding: 70px 0 100px;
+    }
+
+    .hero-wave {
+        height: 75px;
+    }
+
+    /* About & Pillars */
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-highlights {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .why-pillars {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .pillar-item {
+        border-left: none;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Process Track */
+    .process-track {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .process-arrow {
+        transform: rotate(90deg);
+    }
+
+    /* CTA Box */
+    .cta-box {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 22px;
+    }
+
+    .cta-left {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Footer Responsive Stacking */
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
+
+    .footer-right {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .footer-divider {
+        display: none;
+    }
+
+    .copyright {
+        white-space: normal;
+    }
+}
+
+/* Mobile Devices (<= 768px) */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .whatsapp-tooltip {
+        right: 60px;
+        font-size: 0.72rem;
+        padding: 5px 12px;
+    }
+}
+
+/* Small Viewports (<= 540px) */
+@media (max-width: 540px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .why-pillars {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+    }
+
+    .footer-links {
+        gap: 8px 10px;
+    }
+
+    .footer-links .sep {
+        display: none;
+    }
+
+    .footer-links a {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 5px 12px;
+        border-radius: var(--radius-pill);
+        font-size: 0.8rem;
+        border: 1px solid rgba(255, 255, 255, 0.06);
     }
 }
