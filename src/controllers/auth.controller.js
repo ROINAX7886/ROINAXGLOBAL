@@ -4,11 +4,23 @@ import prisma from '../lib/prisma.js';
 import { sendOtpEmail } from '../lib/mailer.js';
 import { uploadToCloudinary, extractPublicId, deleteFromCloudinary } from '../lib/cloudinary.js';
 
-const googleClient = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_CALLBACK_URL
-);
+// Helper: Dynamically get OAuth2Client configured with the current host & protocol
+const getGoogleClient = (req) => {
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  const host = req.get('host');
+  const dynamicCallbackUrl = `${protocol}://${host}/api/auth/google/callback`;
+
+  const callbackUrl = process.env.GOOGLE_CALLBACK_URL || dynamicCallbackUrl;
+
+  return {
+    callbackUrl,
+    client: new OAuth2Client(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      callbackUrl
+    ),
+  };
+};
 
 // Helper: 6-Digit Numeric OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -20,7 +32,7 @@ const migrateGuestCart = async (userId, guestCart) => {
   const cart = await prisma.cart.upsert({
     where: { userId },
     update: {},
-    create: { userId }
+    create: { userId },
   });
 
   for (const item of guestCart) {
@@ -31,19 +43,19 @@ const migrateGuestCart = async (userId, guestCart) => {
       where: {
         cartId_deviceId: {
           cartId: cart.id,
-          deviceId: String(devId)
-        }
+          deviceId: String(devId),
+        },
       },
       update: {
-        quantity: { increment: Number(item.quantity || item.qty || 1) }
+        quantity: { increment: Number(item.quantity || item.qty || 1) },
       },
       create: {
         cartId: cart.id,
         deviceId: String(devId),
         name: String(item.name || 'Hardware Device'),
         price: Number(item.price || 0),
-        quantity: Number(item.quantity || item.qty || 1)
-      }
+        quantity: Number(item.quantity || item.qty || 1),
+      },
     });
   }
 };
@@ -60,20 +72,20 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Email and password are required.'
+        message: 'Email and password are required.',
       });
     }
 
     const normalizedEmail = email.toLowerCase().trim();
 
     const user = await prisma.user.findUnique({
-      where: { email: normalizedEmail }
+      where: { email: normalizedEmail },
     });
 
     if (!user || !user.passwordHash) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password.'
+        message: 'Invalid email or password.',
       });
     }
 
@@ -81,7 +93,7 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password.'
+        message: 'Invalid email or password.',
       });
     }
 
@@ -95,7 +107,7 @@ export const login = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      avatarUrl: user.avatarUrl || null
+      avatarUrl: user.avatarUrl || null,
     };
 
     req.session.save((err) => {
@@ -107,14 +119,14 @@ export const login = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: 'Signed in successfully.',
-        redirectUrl: '/'
+        redirectUrl: '/',
       });
     });
   } catch (error) {
     console.error('Login Error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Internal server error during authentication.'
+      message: 'Internal server error during authentication.',
     });
   }
 };
@@ -158,7 +170,7 @@ export const sendSignupOtp = async (req, res) => {
 
     await prisma.otp.deleteMany({ where: { email: normalizedEmail, type: 'SIGNUP' } });
     await prisma.otp.create({
-      data: { email: normalizedEmail, code, type: 'SIGNUP', expiresAt }
+      data: { email: normalizedEmail, code, type: 'SIGNUP', expiresAt },
     });
 
     await sendOtpEmail(normalizedEmail, code, 'Account Registration');
@@ -183,8 +195,8 @@ export const verifySignupOtp = async (req, res) => {
         email: normalizedEmail,
         code: String(otp).trim(),
         type: 'SIGNUP',
-        expiresAt: { gt: new Date() }
-      }
+        expiresAt: { gt: new Date() },
+      },
     });
 
     if (!record) {
@@ -196,8 +208,8 @@ export const verifySignupOtp = async (req, res) => {
       data: {
         name: name.trim(),
         email: normalizedEmail,
-        passwordHash
-      }
+        passwordHash,
+      },
     });
 
     await prisma.otp.deleteMany({ where: { email: normalizedEmail, type: 'SIGNUP' } });
@@ -212,14 +224,14 @@ export const verifySignupOtp = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      avatarUrl: null
+      avatarUrl: null,
     };
 
     req.session.save(() => {
       res.status(201).json({
         success: true,
         message: 'Account registered and verified successfully.',
-        redirectUrl: '/'
+        redirectUrl: '/',
       });
     });
   } catch (error) {
@@ -249,7 +261,7 @@ export const sendForgotOtp = async (req, res) => {
 
     await prisma.otp.deleteMany({ where: { email: normalizedEmail, type: 'FORGOT_PASSWORD' } });
     await prisma.otp.create({
-      data: { email: normalizedEmail, code, type: 'FORGOT_PASSWORD', expiresAt }
+      data: { email: normalizedEmail, code, type: 'FORGOT_PASSWORD', expiresAt },
     });
 
     await sendOtpEmail(normalizedEmail, code, 'Password Reset');
@@ -274,8 +286,8 @@ export const resetPasswordWithOtp = async (req, res) => {
         email: normalizedEmail,
         code: String(otp).trim(),
         type: 'FORGOT_PASSWORD',
-        expiresAt: { gt: new Date() }
-      }
+        expiresAt: { gt: new Date() },
+      },
     });
 
     if (!record) {
@@ -285,7 +297,7 @@ export const resetPasswordWithOtp = async (req, res) => {
     const passwordHash = await bcrypt.hash(newPassword, 12);
     await prisma.user.update({
       where: { email: normalizedEmail },
-      data: { passwordHash }
+      data: { passwordHash },
     });
 
     await prisma.otp.deleteMany({ where: { email: normalizedEmail, type: 'FORGOT_PASSWORD' } });
@@ -324,7 +336,7 @@ export const changePassword = async (req, res) => {
     const passwordHash = await bcrypt.hash(newPassword, 12);
     await prisma.user.update({
       where: { id: userId },
-      data: { passwordHash }
+      data: { passwordHash },
     });
 
     return res.status(200).json({ success: true, message: 'Password updated successfully.' });
@@ -341,14 +353,18 @@ export const changePassword = async (req, res) => {
 // GET /api/auth/google
 export const googleAuthRedirect = (req, res) => {
   const mode = req.query.mode === 'signup' ? 'signup' : 'login';
+  const { client, callbackUrl } = getGoogleClient(req);
 
-  const url = googleClient.generateAuthUrl({
+  console.log('[OAUTH_REDIRECT] Computed redirect_uri:', callbackUrl);
+
+  const url = client.generateAuthUrl({
     access_type: 'offline',
     scope: ['profile', 'email'],
     prompt: 'select_account',
-    state: JSON.stringify({ mode })
+    state: JSON.stringify({ mode }),
   });
-  res.redirect(url);
+
+  return res.redirect(url);
 };
 
 // GET /api/auth/google/callback
@@ -367,12 +383,13 @@ export const googleAuthCallback = async (req, res) => {
       mode = 'login';
     }
 
-    const { tokens } = await googleClient.getToken(code);
-    googleClient.setCredentials(tokens);
+    const { client } = getGoogleClient(req);
+    const { tokens } = await client.getToken(code);
+    client.setCredentials(tokens);
 
-    const ticket = await googleClient.verifyIdToken({
+    const ticket = await client.verifyIdToken({
       idToken: tokens.id_token,
-      audience: process.env.GOOGLE_CLIENT_ID
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
@@ -381,11 +398,11 @@ export const googleAuthCallback = async (req, res) => {
 
     let user = await prisma.user.findFirst({
       where: {
-        OR: [{ googleId }, { email: normalizedEmail }]
-      }
+        OR: [{ googleId }, { email: normalizedEmail }],
+      },
     });
 
-    // If clicking "Sign In" but no account exists, prevent silent account creation
+    // If clicking "Sign In" but no account exists, redirect to sign up
     if (!user && mode === 'login') {
       return res.redirect('/signup?error=account_not_found');
     }
@@ -397,8 +414,8 @@ export const googleAuthCallback = async (req, res) => {
           name: name || 'Google Enterprise User',
           email: normalizedEmail,
           googleId,
-          avatarUrl: picture || null
-        }
+          avatarUrl: picture || null,
+        },
       });
     } else {
       const updates = {};
@@ -408,7 +425,7 @@ export const googleAuthCallback = async (req, res) => {
       if (Object.keys(updates).length > 0) {
         user = await prisma.user.update({
           where: { id: user.id },
-          data: updates
+          data: updates,
         });
       }
     }
@@ -423,7 +440,7 @@ export const googleAuthCallback = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      avatarUrl: user.avatarUrl || null
+      avatarUrl: user.avatarUrl || null,
     };
 
     req.session.save(() => {
@@ -457,7 +474,7 @@ export const updateProfile = async (req, res) => {
     // 1. Fetch current avatar to allow replacing/destroying previous upload
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { avatarUrl: true }
+      select: { avatarUrl: true },
     });
 
     let avatarUrl = undefined;
@@ -527,7 +544,7 @@ export const getMe = async (req, res) => {
       return res.status(200).json({
         success: true,
         authenticated: false,
-        user: null
+        user: null,
       });
     }
 
@@ -538,8 +555,8 @@ export const getMe = async (req, res) => {
         name: true,
         email: true,
         avatarUrl: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
 
     if (!user) {
@@ -548,20 +565,20 @@ export const getMe = async (req, res) => {
       return res.status(200).json({
         success: true,
         authenticated: false,
-        user: null
+        user: null,
       });
     }
 
     return res.status(200).json({
       success: true,
       authenticated: true,
-      user
+      user,
     });
   } catch (error) {
     console.error('Get Me Error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Server error checking session.'
+      message: 'Server error checking session.',
     });
   }
 };

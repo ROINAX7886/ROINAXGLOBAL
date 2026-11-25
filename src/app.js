@@ -29,7 +29,7 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('layout', 'layouts/base');
 
 // Static assets (CSS, client JS, images)
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 app.set('trust proxy', 1);
 
