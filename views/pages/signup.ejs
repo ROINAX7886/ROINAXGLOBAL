@@ -89,14 +89,16 @@
                 <span>Verify & Finish</span>
                 <i class="fa-solid fa-check"></i>
             </button>
-            <button type="button" id="btnBackToDetails" class="btn-text" style="background: none; border: none; color: #9cb1a4; margin-top: 12px; cursor: pointer; display: block; width: 100%; text-align: center;">Edit registration details</button>
+            <button type="button" id="btnBackToDetails" class="btn-text"
+                style="background: none; border: none; color: #9cb1a4; margin-top: 12px; cursor: pointer; display: block; width: 100%; text-align: center;">Edit
+                registration details</button>
         </form>
 
         <div class="auth-divider"><span>OR</span></div>
 
         <!-- Google OAuth Redirect -->
-        <a href="/api/auth/google?mode=signup" class="btn-google-auth">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        <a href="/api/auth/google" class="btn btn-google">
+            <i class="fa-brands fa-google"></i>
             <span>Continue with Google</span>
         </a>
 
@@ -125,8 +127,8 @@
                 e.preventDefault();
                 const isPassword = passwordInput.getAttribute('type') === 'password';
                 passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-                togglePassword.innerHTML = isPassword 
-                    ? '<i class="fa-regular fa-eye-slash"></i>' 
+                togglePassword.innerHTML = isPassword
+                    ? '<i class="fa-regular fa-eye-slash"></i>'
                     : '<i class="fa-regular fa-eye"></i>';
             });
         }
