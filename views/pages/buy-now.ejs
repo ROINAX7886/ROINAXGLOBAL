@@ -46,7 +46,7 @@
                 <div class="catalog-meta">
                     <span class="stock-badge">In Stock & Verified</span>
                     <a href="/cart" class="header-cart-link">
-                        <i class="fa-solid fa-cart-shopping"></i> My Basket (<span class="cart-count">0</span>)
+                        <i class="fa-solid fa-cart-shopping"></i> My Cart (<span class="cart-count">0</span>)
                     </a>
                 </div>
             </div>
@@ -526,7 +526,7 @@
         <!-- Floating Checkout Pill Link -->
         <a href="/cart" class="floating-cart-pill" id="floatingCartPill" style="display: none;">
             <i class="fa-solid fa-basket-shopping"></i>
-            <span>Review Basket & Checkout</span>
+            <span>Review Cart & Checkout</span>
             <strong class="cart-pill-count">0</strong>
         </a>
     </section>
@@ -537,7 +537,7 @@
             // Completely clear any old localStorage relics
             localStorage.removeItem('roinax_cart');
 
-            // Fetch live basket state from server session
+            // Fetch live cart state from server session
             async function fetchServerCartCount() {
                 try {
                     const res = await fetch('/api/cart');
@@ -614,7 +614,7 @@
                                 this.disabled = false;
                             }, 1200);
                         } else {
-                            alert(data.message || 'Could not add to basket.');
+                            alert(data.message || 'Could not add to Cart.');
                             this.innerHTML = originalText;
                             this.disabled = false;
                         }
