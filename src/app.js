@@ -31,6 +31,8 @@ app.set('layout', 'layouts/base');
 // Static assets (CSS, client JS, images)
 app.use(express.static(path.join(__dirname, '../public')));
 
+app.set('trust proxy', 1);
+
 // Session configuration
 app.use(
   session({
