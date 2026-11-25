@@ -31,7 +31,7 @@
                 <label for="fullName">Full Name</label>
                 <div class="input-wrap">
                     <i class="fa-regular fa-user input-icon"></i>
-                    <input type="text" id="fullName" name="fullName" placeholder="John Doe" required
+                    <input type="text" id="fullName" name="fullName" placeholder="Aadarsh Srivastava" required
                         autocomplete="name">
                 </div>
             </div>
@@ -52,7 +52,7 @@
                         style="position: absolute; left: 14px; pointer-events: none;"></i>
                     <input type="password" id="signupPassword" name="password" class="has-toggle"
                         placeholder="Minimum 6 characters" required>
-                    <button type="button" class="password-toggle-btn" data-target="signupPassword"
+                    <button type="button" class="password-toggle-btn" id="togglePassword" data-target="signupPassword"
                         aria-label="Toggle password visibility">
                         <i class="fa-regular fa-eye"></i>
                     </button>
@@ -73,15 +73,15 @@
 
         <!-- STEP 2: Verify OTP (Appears immediately after requesting) -->
         <form id="signupOtpForm" style="display: none; margin-top: 10px;" novalidate>
-            <div class="alert-info">
-                OTP sent to <strong id="displayTargetEmail"></strong>
+            <div class="alert-info" style="margin-bottom: 15px; color: #9cb1a4; font-size: 0.9rem;">
+                OTP sent to <strong id="displayTargetEmail" style="color: #82d12b;"></strong>
             </div>
 
             <div class="form-group">
                 <label for="otpCode">6-Digit Verification Code</label>
                 <div class="input-wrap">
                     <input type="text" id="otpCode" name="otp" maxlength="6" required placeholder="123456"
-                        class="otp-input">
+                        class="otp-input" style="text-align: center; letter-spacing: 0.25em; font-size: 1.2rem;">
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
                 <span>Verify & Finish</span>
                 <i class="fa-solid fa-check"></i>
             </button>
-            <button type="button" id="btnBackToDetails" class="btn-text">Edit registration details</button>
+            <button type="button" id="btnBackToDetails" class="btn-text" style="background: none; border: none; color: #9cb1a4; margin-top: 12px; cursor: pointer; display: block; width: 100%; text-align: center;">Edit registration details</button>
         </form>
 
         <div class="auth-divider"><span>OR</span></div>
@@ -108,125 +108,134 @@
 </div>
 
 <script>
-    const detailsForm = document.getElementById('signupDetailsForm');
-    const otpForm = document.getElementById('signupOtpForm');
-    const btnSendOtp = document.getElementById('btnSendOtp');
-    const btnVerify = document.getElementById('btnVerifySignup');
-    const errorBanner = document.getElementById('errorBanner');
-    const errorMessage = document.getElementById('errorMessage');
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
+    document.addEventListener('DOMContentLoaded', () => {
+        const detailsForm = document.getElementById('signupDetailsForm');
+        const otpForm = document.getElementById('signupOtpForm');
+        const btnSendOtp = document.getElementById('btnSendOtp');
+        const btnVerify = document.getElementById('btnVerifySignup');
+        const errorBanner = document.getElementById('errorBanner');
+        const errorMessage = document.getElementById('errorMessage');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('signupPassword');
+        const btnBackToDetails = document.getElementById('btnBackToDetails');
 
-    togglePassword.addEventListener('click', () => {
-        const isPassword = passwordInput.getAttribute('type') === 'password';
-        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-        togglePassword.innerHTML = isPassword ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
-    });
-
-    let signupData = {};
-
-    detailsForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errorBanner.style.display = 'none';
-
-        const fullName = document.getElementById('fullName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = passwordInput.value;
-
-        if (!fullName || !email || !password) {
-            errorMessage.textContent = 'Please fill out all required fields.';
-            errorBanner.style.display = 'flex';
-            return;
-        }
-
-        if (password.length < 6) {
-            errorMessage.textContent = 'Password must be at least 6 characters.';
-            errorBanner.style.display = 'flex';
-            return;
-        }
-
-        signupData = { fullName, email, password };
-
-        btnSendOtp.disabled = true;
-        btnSendOtp.innerHTML = '<span>Sending Code...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
-
-        try {
-            const res = await fetch('/api/auth/send-signup-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: signupData.email })
+        // Robust Password Toggle
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                togglePassword.innerHTML = isPassword 
+                    ? '<i class="fa-regular fa-eye-slash"></i>' 
+                    : '<i class="fa-regular fa-eye"></i>';
             });
-            const data = await res.json();
+        }
 
-            if (res.ok && data.success) {
-                document.getElementById('displayTargetEmail').textContent = signupData.email;
-                detailsForm.style.display = 'none';
-                otpForm.style.display = 'block';
-            } else {
-                errorMessage.textContent = data.message || 'Failed to send OTP.';
-                errorBanner.style.display = 'flex';
+        let signupData = {};
+
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            errorBanner.style.display = 'flex';
+        }
+
+        function hideError() {
+            errorBanner.style.display = 'none';
+        }
+
+        // Handle Step 1
+        detailsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const password = passwordInput.value;
+
+            if (!fullName || !email || !password) {
+                showError('Please fill out all required fields.');
+                return;
             }
-        } catch (err) {
-            errorMessage.textContent = 'Network error requesting OTP.';
-            errorBanner.style.display = 'flex';
-        } finally {
-            btnSendOtp.disabled = false;
-            btnSendOtp.innerHTML = '<span>Create Account</span> <i class="fa-solid fa-arrow-right"></i>';
-        }
-    });
 
-    otpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errorBanner.style.display = 'none';
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters.');
+                return;
+            }
 
-        const otp = document.getElementById('otpCode').value.trim();
-        if (!otp || otp.length !== 6) {
-            errorMessage.textContent = 'Please enter a valid 6-digit verification code.';
-            errorBanner.style.display = 'flex';
-            return;
-        }
+            signupData = { fullName, email, password };
 
-        btnVerify.disabled = true;
-        btnVerify.innerHTML = '<span>Verifying...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+            btnSendOtp.disabled = true;
+            btnSendOtp.innerHTML = '<span>Sending Code...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
 
-        try {
-            const res = await fetch('/api/auth/verify-signup-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: signupData.fullName,
-                    email: signupData.email,
-                    password: signupData.password,
-                    otp
-                })
-            });
-            const data = await res.json();
+            try {
+                const res = await fetch('/api/auth/send-signup-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: signupData.email })
+                });
+                const data = await res.json();
 
-            if (res.ok && data.success) {
-                const localCart = JSON.parse(localStorage.getItem('roinax_cart')) || [];
-                if (localCart.length > 0) {
-                    await fetch('/api/cart/sync', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ items: localCart })
-                    });
+                if (res.ok && data.success) {
+                    document.getElementById('displayTargetEmail').textContent = signupData.email;
+                    detailsForm.style.display = 'none';
+                    otpForm.style.display = 'block';
+                    document.getElementById('otpCode').focus();
+                } else {
+                    showError(data.message || 'Failed to send OTP.');
                 }
-                window.location.href = data.redirectUrl || '/';
-            } else {
-                errorMessage.textContent = data.message || 'Invalid or expired OTP.';
-                errorBanner.style.display = 'flex';
+            } catch (err) {
+                showError('Network error requesting OTP.');
+            } finally {
+                btnSendOtp.disabled = false;
+                btnSendOtp.innerHTML = '<span>Create Account</span> <i class="fa-solid fa-arrow-right"></i>';
             }
-        } catch (err) {
-            errorMessage.textContent = 'Verification error.';
-            errorBanner.style.display = 'flex';
-        } finally {
-            btnVerify.disabled = false;
-            btnVerify.innerHTML = '<span>Verify & Finish</span> <i class="fa-solid fa-check"></i>';
-        }
-    });
+        });
 
-    document.getElementById('btnBackToDetails').addEventListener('click', () => {
-        otpForm.style.display = 'none';
-        detailsForm.style.display = 'block';
+        // Handle Step 2 (Verification)
+        otpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const otp = document.getElementById('otpCode').value.trim();
+            if (!otp || otp.length !== 6) {
+                showError('Please enter a valid 6-digit verification code.');
+                return;
+            }
+
+            btnVerify.disabled = true;
+            btnVerify.innerHTML = '<span>Verifying...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                const res = await fetch('/api/auth/verify-signup-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: signupData.fullName,
+                        email: signupData.email,
+                        password: signupData.password,
+                        otp
+                    })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    window.location.href = data.redirectUrl || '/';
+                } else {
+                    showError(data.message || 'Invalid or expired OTP.');
+                }
+            } catch (err) {
+                showError('Verification error.');
+            } finally {
+                btnVerify.disabled = false;
+                btnVerify.innerHTML = '<span>Verify & Finish</span> <i class="fa-solid fa-check"></i>';
+            }
+        });
+
+        if (btnBackToDetails) {
+            btnBackToDetails.addEventListener('click', () => {
+                hideError();
+                otpForm.style.display = 'none';
+                detailsForm.style.display = 'block';
+            });
+        }
     });
 </script>

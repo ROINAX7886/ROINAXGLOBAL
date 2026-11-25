@@ -106,116 +106,131 @@
 </div>
 
 <script>
-    const form = document.getElementById('loginForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const errorBanner = document.getElementById('errorBanner');
-    const errorMessage = document.getElementById('errorMessage');
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorBanner = document.getElementById('errorBanner');
+        const errorMessage = document.getElementById('errorMessage');
+        const passwordInput = document.getElementById('loginPassword');
+        const toggleBtn = document.querySelector('.password-toggle-btn');
 
-    togglePassword.addEventListener('click', () => {
-        const isPassword = passwordInput.getAttribute('type') === 'password';
-        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-        togglePassword.innerHTML = isPassword ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
-    });
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errorBanner.style.display = 'none';
-
-        const email = document.getElementById('email').value.trim();
-        const password = passwordInput.value;
-
-        if (!email || !password) {
-            errorMessage.textContent = 'Please provide both email and password.';
-            errorBanner.style.display = 'flex';
-            return;
+        // 1. Password Visibility Toggle
+        if (toggleBtn && passwordInput) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleBtn.innerHTML = isPassword
+                    ? '<i class="fa-regular fa-eye-slash"></i>'
+                    : '<i class="fa-regular fa-eye"></i>';
+            });
         }
 
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Signing In...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+        // 2. Login Form Submit
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorBanner.style.display = 'none';
 
-        try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await res.json();
+                const email = document.getElementById('email').value.trim();
+                const password = passwordInput.value;
 
-            if (res.ok && data.success) {
-                const localCart = JSON.parse(localStorage.getItem('roinax_cart')) || [];
-                if (localCart.length > 0) {
-                    await fetch('/api/cart/sync', {
+                if (!email || !password) {
+                    errorMessage.textContent = 'Please provide both email and password.';
+                    errorBanner.style.display = 'flex';
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span>Signing In...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+                try {
+                    const res = await fetch('/api/auth/login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ items: localCart })
+                        body: JSON.stringify({ email, password })
                     });
+                    const data = await res.json();
+
+                    if (res.ok && data.success) {
+                        window.location.href = data.redirectUrl || '/';
+                    } else {
+                        errorMessage.textContent = data.message || 'Invalid email or password.';
+                        errorBanner.style.display = 'flex';
+                    }
+                } catch (err) {
+                    errorMessage.textContent = 'Server connection error.';
+                    errorBanner.style.display = 'flex';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>';
                 }
-                window.location.href = data.redirectUrl || '/';
-            } else {
-                errorMessage.textContent = data.message || 'Authentication failed.';
-                errorBanner.style.display = 'flex';
-            }
-        } catch (err) {
-            errorMessage.textContent = 'Server connection error.';
-            errorBanner.style.display = 'flex';
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>';
-        }
-    });
-
-    // Forgot Password Flow
-    const forgotModal = document.getElementById('forgotModal');
-    let targetResetEmail = '';
-
-    document.getElementById('linkForgotPassword').addEventListener('click', (e) => {
-        e.preventDefault();
-        forgotModal.style.display = 'flex';
-    });
-
-    document.getElementById('btnCloseForgot').addEventListener('click', () => {
-        forgotModal.style.display = 'none';
-    });
-
-    document.getElementById('btnSendForgotOtp').addEventListener('click', async () => {
-        targetResetEmail = document.getElementById('forgotEmail').value.trim();
-        if (!targetResetEmail) return alert('Please enter your email.');
-
-        const res = await fetch('/api/auth/forgot-password-otp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: targetResetEmail })
-        });
-        const data = await res.json();
-        if (res.ok && data.success) {
-            document.getElementById('forgotStep1').style.display = 'none';
-            document.getElementById('forgotStep2').style.display = 'block';
-        } else {
-            alert(data.message || 'Failed to dispatch code.');
-        }
-    });
-
-    document.getElementById('btnConfirmReset').addEventListener('click', async () => {
-        const otp = document.getElementById('resetOtp').value.trim();
-        const newPassword = document.getElementById('resetNewPassword').value;
-
-        if (!otp || newPassword.length < 6) {
-            return alert('Enter 6-digit OTP and new password (min 6 chars).');
+            });
         }
 
-        const res = await fetch('/api/auth/reset-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: targetResetEmail, otp, newPassword })
-        });
-        const data = await res.json();
-        if (res.ok && data.success) {
-            alert('Password reset successful. You can now login.');
-            forgotModal.style.display = 'none';
-        } else {
-            alert(data.message || 'Reset failed.');
+        // 3. Forgot Password Modal
+        const forgotModal = document.getElementById('forgotModal');
+        const forgotLink = document.querySelector('a[href="/forgot-password"]');
+        let targetResetEmail = '';
+
+        if (forgotLink && forgotModal) {
+            forgotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                forgotModal.style.display = 'flex';
+            });
+        }
+
+        const btnCloseForgot = document.getElementById('btnCloseForgot');
+        if (btnCloseForgot && forgotModal) {
+            btnCloseForgot.addEventListener('click', () => {
+                forgotModal.style.display = 'none';
+            });
+        }
+
+        const btnSendForgotOtp = document.getElementById('btnSendForgotOtp');
+        if (btnSendForgotOtp) {
+            btnSendForgotOtp.addEventListener('click', async () => {
+                targetResetEmail = document.getElementById('forgotEmail').value.trim();
+                if (!targetResetEmail) return alert('Please enter your email.');
+
+                const res = await fetch('/api/auth/forgot-password-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: targetResetEmail })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    document.getElementById('forgotStep1').style.display = 'none';
+                    document.getElementById('forgotStep2').style.display = 'block';
+                } else {
+                    alert(data.message || 'Failed to dispatch code.');
+                }
+            });
+        }
+
+        const btnConfirmReset = document.getElementById('btnConfirmReset');
+        if (btnConfirmReset) {
+            btnConfirmReset.addEventListener('click', async () => {
+                const otp = document.getElementById('resetOtp').value.trim();
+                const newPassword = document.getElementById('resetNewPassword').value;
+
+                if (!otp || newPassword.length < 6) {
+                    return alert('Enter 6-digit OTP and new password (min 6 chars).');
+                }
+
+                const res = await fetch('/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: targetResetEmail, otp, newPassword })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    alert('Password reset successful. You can now login.');
+                    if (forgotModal) forgotModal.style.display = 'none';
+                } else {
+                    alert(data.message || 'Reset failed.');
+                }
+            });
         }
     });
 </script>

@@ -11,7 +11,6 @@
 
     --input-bg: rgba(255, 255, 255, 0.08);
     --input-focus-bg: #eaf1f8;
-    /* Matches the white-blue active input state in image */
     --input-border: rgba(255, 255, 255, 0.18);
 
     --radius-sm: 8px;
@@ -199,11 +198,12 @@ label {
     font-size: 0.95rem;
     pointer-events: none;
     transition: color 0.2s ease;
+    z-index: 2;
 }
 
 .input-wrap input {
     width: 100%;
-    padding: 14px 44px 14px 44px;
+    padding: 14px 48px 14px 44px;
     background: var(--input-bg);
     border: 1px solid var(--input-border);
     border-radius: var(--radius-md);
@@ -218,7 +218,7 @@ label {
     color: #7d8c82;
 }
 
-/* Light active focus state as seen in your screenshot */
+/* Light active focus state */
 .input-wrap input:focus {
     background: var(--input-focus-bg);
     color: #0b150e;
@@ -230,24 +230,45 @@ label {
     color: #4b5d52;
 }
 
-.input-wrap:focus-within .password-toggle {
-    color: #4b5d52;
-}
-
-.password-toggle {
+/* Password Visibility Toggle Fix (Layering & Hit-Area) */
+.password-toggle,
+.password-toggle-btn {
     position: absolute;
-    right: 14px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     background: transparent;
     border: none;
     color: #829288;
     cursor: pointer;
-    padding: 4px;
-    font-size: 0.95rem;
-    transition: color 0.2s ease;
+    padding: 8px;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+    transition: color 0.2s ease, transform 0.15s ease;
 }
 
-.password-toggle:hover {
+.password-toggle i,
+.password-toggle-btn i {
+    pointer-events: none;
+}
+
+.password-toggle:hover,
+.password-toggle-btn:hover {
     color: #ffffff;
+}
+
+.input-wrap:focus-within .password-toggle,
+.input-wrap:focus-within .password-toggle-btn {
+    color: #3b4e41;
+}
+
+.input-wrap:focus-within .password-toggle:hover,
+.input-wrap:focus-within .password-toggle-btn:hover {
+    color: var(--green-dark);
 }
 
 /* OTP Specific Input */
