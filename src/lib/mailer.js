@@ -2,37 +2,55 @@ import 'dotenv/config';
 import { google } from 'googleapis';
 
 const oAuth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    'https://developers.google.com/oauthplayground'
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'https://developers.google.com/oauthplayground'
 );
 
 oAuth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
 
 const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
 
-const createRawEmail = ({ to, from, subject, html }) => {
-    const messageParts = [
-        `From: ${from}`,
-        `To: ${to}`,
-        'Content-Type: text/html; charset=utf-8',
-        'MIME-Version: 1.0',
-        `Subject: =?utf-8?B?${Buffer.from(subject).toString('base64')}?=`,
-        '',
-        html,
-    ];
-    const message = messageParts.join('\r\n');
-    return Buffer.from(message)
-        .toString('base64')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=+$/, '');
+const createRawEmail = ({ to, from, replyTo, subject, html }) => {
+  const messageParts = [
+    `From: ${from}`,
+    `To: ${to}`,
+    ...(replyTo ? [`Reply-To: ${replyTo}`] : []),
+    'Content-Type: text/html; charset=utf-8',
+    'MIME-Version: 1.0',
+    `Subject: =?utf-8?B?${Buffer.from(subject).toString('base64')}?=`,
+    '',
+    html,
+  ];
+  const message = messageParts.join('\r\n');
+  return Buffer.from(message)
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+};
+
+export const sendMail = async ({ to, subject, html, replyTo }) => {
+  const raw = createRawEmail({
+    to,
+    from: `"ROINAX Global" <${process.env.GMAIL_USER}>`,
+    replyTo,
+    subject,
+    html,
+  });
+
+  const res = await gmail.users.messages.send({
+    userId: 'me',
+    requestBody: { raw },
+  });
+
+  return res.data;
 };
 
 export const sendOtpEmail = async (email, otpCode, purpose = 'Verification') => {
-    const htmlContent = `
+  const htmlContent = `
     <div style="font-family: Arial, sans-serif; background: #0d160f; color: #ffffff; padding: 30px; border-radius: 12px; max-width: 480px; margin: auto; border: 1px solid rgba(130, 209, 43, 0.35);">
       <h2 style="color: #82d12b; margin-top: 0; font-size: 22px;">ROINAX Global</h2>
       <p style="color: #d1ded5; font-size: 14px;">Your one-time security code for <strong>${purpose}</strong> is:</p>
@@ -43,17 +61,9 @@ export const sendOtpEmail = async (email, otpCode, purpose = 'Verification') => 
     </div>
   `;
 
-    const raw = createRawEmail({
-        to: email,
-        from: `"ROINAX Global" <${process.env.GMAIL_USER}>`,
-        subject: `ROINAX Global - ${purpose} Code`,
-        html: htmlContent,
-    });
-
-    const res = await gmail.users.messages.send({
-        userId: 'me',
-        requestBody: { raw },
-    });
-
-    return res.data;
+  return sendMail({
+    to: email,
+    subject: `ROINAX Global - ${purpose} Code`,
+    html: htmlContent,
+  });
 };
