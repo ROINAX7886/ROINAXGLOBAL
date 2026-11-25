@@ -4,22 +4,25 @@ import prisma from '../lib/prisma.js';
 import { sendOtpEmail } from '../lib/mailer.js';
 import { uploadToCloudinary, extractPublicId, deleteFromCloudinary } from '../lib/cloudinary.js';
 
-// Helper: Dynamically get OAuth2Client configured with the current host & protocol
+// Helper: Dynamically get OAuth2Client configured for User Login/Signup
 const getGoogleClient = (req) => {
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
   const host = req.get('host');
   const dynamicCallbackUrl = `${protocol}://${host}/api/auth/google/callback`;
 
-  const callbackUrl = process.env.GOOGLE_CALLBACK_URL || dynamicCallbackUrl;
+  // Prefer dedicated GOOGLE_OAUTH_CALLBACK_URL, fallback to dynamic request URL
+  const callbackUrl = process.env.GOOGLE_OAUTH_CALLBACK_URL || dynamicCallbackUrl;
 
-  return {
-    callbackUrl,
-    client: new OAuth2Client(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      callbackUrl
-    ),
-  };
+  const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET;
+
+  const client = new OAuth2Client({
+    clientId,
+    clientSecret,
+    redirectUri: callbackUrl,
+  });
+
+  return { client, callbackUrl, clientId };
 };
 
 // Helper: 6-Digit Numeric OTP
@@ -355,14 +358,19 @@ export const googleAuthRedirect = (req, res) => {
   const mode = req.query.mode === 'signup' ? 'signup' : 'login';
   const { client, callbackUrl } = getGoogleClient(req);
 
-  console.log('[OAUTH_REDIRECT] Computed redirect_uri:', callbackUrl);
+  console.log('[OAUTH_REDIRECT] Initiated for mode:', mode);
+  console.log('[OAUTH_REDIRECT] Computed callbackUrl:', callbackUrl);
 
   const url = client.generateAuthUrl({
     access_type: 'offline',
     scope: ['profile', 'email'],
     prompt: 'select_account',
+    response_type: 'code',
+    redirect_uri: callbackUrl,
     state: JSON.stringify({ mode }),
   });
+
+  console.log('[OAUTH_REDIRECT] Redirecting browser to:', url);
 
   return res.redirect(url);
 };
@@ -383,13 +391,17 @@ export const googleAuthCallback = async (req, res) => {
       mode = 'login';
     }
 
-    const { client } = getGoogleClient(req);
-    const { tokens } = await client.getToken(code);
+    const { client, callbackUrl, clientId } = getGoogleClient(req);
+
+    const { tokens } = await client.getToken({
+      code,
+      redirect_uri: callbackUrl,
+    });
     client.setCredentials(tokens);
 
     const ticket = await client.verifyIdToken({
       idToken: tokens.id_token,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: clientId,
     });
 
     const payload = ticket.getPayload();
