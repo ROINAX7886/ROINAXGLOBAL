@@ -1,4 +1,4 @@
-import { transporter, sendOtpEmail } from '../../public/src/lib/mailer.js';
+import { transporter } from '../lib/mailer.js';
 
 export const handleContactEnquiry = async (req, res) => {
     try {
